@@ -3,41 +3,45 @@
 import React from "react";
 import {
   Menubar,
-  MenubarCheckboxItem,
   MenubarContent,
   MenubarItem,
   MenubarMenu,
   MenubarRadioGroup,
   MenubarRadioItem,
   MenubarSeparator,
-  MenubarShortcut,
-  MenubarSub,
-  MenubarSubContent,
-  MenubarSubTrigger,
   MenubarTrigger,
 } from "@/components/ui/menubar";
-import { Button } from "../ui/button";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import Image from "next/image";
+import Link from "next/link";
 
 const Navbar = () => {
-  const { user, isLoading } = useUser();
+  const { user } = useUser();
 
   const handleClick = () => {
     alert("good");
   };
 
   return (
-    <div className="flex justify-between items-center">
+    <div className="flex justify-between items-center pl-1">
       <div>{"</>"}</div>
       <div>
         <Menubar>
           <MenubarMenu>
             <MenubarTrigger>
-              <div>
-                {/* <Image width={5} height={5} src={user?.picture} alt="My profile" /> */}
-                {user ? user?.name : 'Not Connected'}
-              </div>
+              {user ? <div className="flex items-center">
+                <Image
+                  width={30}
+                  height={30}
+                  className="rounded-2xl mr-2"
+                  src={user?.picture ? user?.picture : "/user.png"}
+                  alt="My profile"
+                />
+                <div>
+                  <div style={{marginBottom: '-5px'}} className="text-start">{user?.name}</div>
+                  <span className="text-sm text-gray-500">{user?.email}</span>
+                </div>
+              </div> : 'Not Connected'}
             </MenubarTrigger>
             <MenubarContent>
               <MenubarRadioGroup value="benoit">
@@ -45,21 +49,21 @@ const Navbar = () => {
                   Notice
                 </MenubarRadioItem>
                 {user && (
-                  <a href="/api/auth/me">
+                  <Link href="/api/auth/me">
                     <MenubarRadioItem value="andy">Profile</MenubarRadioItem>
-                  </a>
+                  </Link>
                 )}
               </MenubarRadioGroup>
               <MenubarSeparator />
               {!user && (
-                <a href="/api/auth/login">
+                <Link href="/api/auth/login">
                   <MenubarItem inset>Login</MenubarItem>
-                </a>
+                </Link>
               )}
               {user && (
-                <a href="/api/auth/logout">
+                <Link href="/api/auth/logout">
                   <MenubarItem inset>Logout</MenubarItem>
-                </a>
+                </Link>
               )}
             </MenubarContent>
           </MenubarMenu>
