@@ -30,7 +30,7 @@ const ChatContents = () => {
                 height={40}
                 width={40}
                 className="rounded-full"
-                src={"/me.jpeg"}
+                src={"/me.png"}
                 alt="My profile"
               ></Image>
             </div>
@@ -51,7 +51,7 @@ const ChatContents = () => {
                 height={40}
                 width={40}
                 className="rounded-full"
-                src={"/me.jpeg"}
+                src={"/me.png"}
                 alt="My profile"
               ></Image>
             </div>
@@ -84,7 +84,7 @@ const ChatContents = () => {
                 height={40}
                 width={40}
                 className="rounded-full"
-                src={"/me.jpeg"}
+                src={"/me.png"}
                 alt="My profile"
               ></Image>
             </div>
@@ -107,7 +107,7 @@ const ChatContents = () => {
                 height={40}
                 width={40}
                 className="rounded-full"
-                src={"/me.jpeg"}
+                src={"/me.png"}
                 alt="My profile"
               ></Image>
             </div>
@@ -130,7 +130,7 @@ const ChatContents = () => {
                 height={40}
                 width={40}
                 className="rounded-full"
-                src={"/me.jpeg"}
+                src={"/me.png"}
                 alt="My profile"
               ></Image>
             </div>

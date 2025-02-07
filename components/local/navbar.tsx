@@ -23,10 +23,12 @@ const Navbar = () => {
   };
 
   return (
-    <div className="flex justify-between items-center pl-1">
-      <div>{"</>"}</div>
+    <div className="flex justify-between items-center px-1">
       <div>
-        <Menubar>
+        <Link href={'/'}>{"</>"}</Link>
+      </div>
+      <div>
+        <Menubar style={{height: '50px'}}>
           <MenubarMenu>
             <MenubarTrigger>
               {user ? <div className="flex items-center">

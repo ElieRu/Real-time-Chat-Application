@@ -1,6 +1,8 @@
-import { X } from "lucide-react";
 import Image from "next/image";
 import React from "react";
+import UsersDialog from "./users-dialog";
+import GroupsDialog from "./groups-dialog";
+import NewGroup from "./new-group";
 
 const ChatBar = () => {
   return (
@@ -22,10 +24,14 @@ const ChatBar = () => {
           </div>
         </div>
       </div>
-      <div>
-        <button>
-          <X />
-        </button>
+      <div className="flex">
+        <div className="md:hidden">
+          <UsersDialog />
+        </div>
+        <div className="lg:hidden">
+          <GroupsDialog />
+          <NewGroup />
+        </div>
       </div>
     </div>
   );

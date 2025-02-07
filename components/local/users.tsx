@@ -2,22 +2,14 @@ import ListUsers from "./list-users";
 import Search from "./search";
 
 export default function Users() {
+  const users = [1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6];
   return (
     <div
-      className="row-span-full rounded pr-3 pt-1 overflow-hidden"
+      className="row-span-full col-span-2 lg:col-span-1 rounded pr-3 pt-1 overflow-hidden hidden md:block"
       style={{ height: "100%" }}
     >
       <Search />
-      <div
-        className="overflow-y-scroll"
-        style={{
-          height: "90%",
-          scrollbarColor: "gray transparent",
-          scrollbarWidth: "thin",
-        }}
-      >
-        <ListUsers></ListUsers>
-      </div>
+      <ListUsers></ListUsers>
     </div>
   );
 }
