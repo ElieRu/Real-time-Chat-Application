@@ -3,19 +3,8 @@ import Navbar from "@/components/local/navbar";
 import Users from "@/components/local/users";
 import Chat from "@/components/local/chat";
 import Groups from "@/components/local/groups";
-import { useUser } from '@auth0/nextjs-auth0/client';
-import { useEffect } from "react";
-import { fetchUsers } from "@/lib/datas";
 
 export default function Home() {
-
-  const { user } = useUser()
-
-  useEffect(() => {
-    if (user) {
-      fetchUsers(user)
-    }
-  }, [user]);
 
   return (
     <div
