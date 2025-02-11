@@ -1,10 +1,9 @@
 "use client";
+import { User } from "@/lib/definitions";
 import Image from "next/image";
 import React from "react";
 
-const ListUsers = () => {
-  const users = [1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6];
-
+const ListUsers = ({users}: {users: User[]}) => {
   return (
     <div
     className="overflow-y-scroll"
@@ -25,14 +24,14 @@ const ListUsers = () => {
               <Image
                 height={50}
                 width={50}
-                src={"/me.png"}
+                src={user?.picture ? user?.picture : "/me.png"}
                 alt="User Profile"
                 className="rounded-full"
               ></Image>
             </div>
             <div className="flex w-full justify-between items-center">
               <div>
-                <strong className="capitalize">John Doe</strong>
+                <strong className="capitalize">{user?.name}</strong>
                 <div>
                   <span className="text-sm">Hello</span>
                 </div>
