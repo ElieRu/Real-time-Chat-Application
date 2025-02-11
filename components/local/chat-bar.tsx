@@ -12,9 +12,10 @@ const ChatBar = () => {
           <Image
             height={40}
             width={40}
-            src={"/me.jpeg"}
+            src="/me.jpeg"
             alt="User Profile"
             className="rounded-full"
+            style={{width: 'auto', height: 'auto'}}
           />
         </div>
         <div>
