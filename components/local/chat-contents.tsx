@@ -1,7 +1,16 @@
+'use client'
 import Image from "next/image";
 import React from "react";
+// import { io } from "socket.io-client";
 
 const ChatContents = () => {
+
+  // const socket = io('http://localhost:3000')
+
+  // socket.on('response', (response) => {
+  //   console.log(response);
+  // })
+
   return (
     <div
       className="bg-gray-200 my-3 p-2 rounded-lg overflow-hidden"
