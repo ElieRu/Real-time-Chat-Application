@@ -5,15 +5,10 @@ import Chat from "@/components/local/chat";
 import Groups from "@/components/local/groups";
 import { UserForm } from "@/lib/definitions";
 import { useState } from "react";
-
 export default function Home() {
 
   const [user, setUser] = useState<UserForm> ({})
   const [selected, setSelected] = useState(false)
-
-  // if (user.name && user.email) {
-  //   setSelected(true);
-  // }
 
   const selectUser = (user: UserForm) => {
     setSelected(true);

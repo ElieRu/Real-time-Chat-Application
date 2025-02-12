@@ -25,4 +25,11 @@ export type UserDatas = {
     picture: string,
     status: string | null
 }
+export interface Message {
+    sub?: string;
+    picture: string;
+    content: string;
+  };
 
+  export type SubType = Readonly<string>
+  export type PictureType = Readonly<string>
