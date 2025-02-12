@@ -9,8 +9,9 @@ import {
 } from "@/components/ui/dialog";
 import { User } from "lucide-react";
 import ListUsers from "./list-users";
+import { UserForm } from "@/lib/definitions";
 
-const UsersDialog = () => {
+const UsersDialog = ({onClick}: {onClick: (user: UserForm) => UserForm}) => {
   return (
     <Dialog>
       <DialogTrigger className="bg-green-500 rounded-md text-white text-sm py-1 px-2">
@@ -23,7 +24,7 @@ const UsersDialog = () => {
             <Search />
           </div> */}
           <DialogDescription className="overflow-hidden">
-            <ListUsers/>
+            <ListUsers onClick={onClick} />
           </DialogDescription>
         </DialogHeader>
       </DialogContent>

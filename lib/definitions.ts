@@ -1,18 +1,28 @@
-import { UserProfile } from "@auth0/nextjs-auth0/client";
+import { UserProfile as UserImported } from "@auth0/nextjs-auth0/client"
 
-export type UserForm = UserProfile
+export type UserForm = UserImported
 
-export type UserSub = Pick<UserProfile, "sub"> | null | undefined | string
+export interface UserFieldsAdded {
+    status?: string | null
+}
+
+export type UserProfile = UserImported & UserFieldsAdded
+
+export type UserSub = Pick<UserImported, "sub"> | null | undefined | string
 
 export type Users = UserForm[]
 
-export type UserEmail = Pick<UserProfile, 'email'> | null | undefined | string
+export type UserEmail = Pick<UserImported, 'email'> | null | undefined | string
 
 export type OnChange = (v: string) => string
 
-export type UserName = Pick<UserProfile, 'name'>
+export type UserName = Pick<UserImported, 'name'>
 
 export type UniqueUser = Readonly<UserName> | null | undefined
 
-
+export type UserDatas = {
+    name: string, 
+    picture: string,
+    status: string | null
+}
 

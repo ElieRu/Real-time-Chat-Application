@@ -32,7 +32,6 @@ export async function GET(request: NextRequest) {
             const all_users = await get_users(email, false);
             return all_users;
         } else {
-            console.log(form);
             const create_user = new User(form);
             create_user.save();
             const all_users = await get_users(email, false);

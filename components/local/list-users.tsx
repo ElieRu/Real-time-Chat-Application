@@ -1,13 +1,13 @@
 "use client";
 import { OnChange, UniqueUser, UserForm, Users } from "@/lib/definitions";
-import Image from "next/image";
 import React from "react";
 import { useEffect, useState } from "react";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import { fetchUsers } from "@/lib/datas";
 import Search from "./search";
+import UserItem from "./user-item";
 
-const ListUsers = () => {
+const ListUsers = ({onClick}: {onClick: (user: UserForm) => UserForm}) => {
   const [search, setSearch] = useState("");
   const onChange: OnChange = (value) => {
     setSearch(value);
@@ -26,6 +26,8 @@ const ListUsers = () => {
   useEffect(() => {
     getUsers(user);
   }, [user]);
+
+  
 
   return (
     <>
@@ -50,30 +52,7 @@ const ListUsers = () => {
                 : MyUser?.name && MyUser?.name.includes(search);
             })
             .map((user, index) => (
-              <div
-                className="mt-2 flex items-center border rounded-lg p-2 hover:bg-green-500 hover:text-white hover:drop-shadow-md active:bg-green-300"
-                style={{ cursor: "pointer" }}
-                key={index}
-              >
-                <div className="mr-2">
-                  <Image
-                    height={50}
-                    width={50}
-                    src={user?.picture ? user?.picture : "/me.png"}
-                    alt="User Profile"
-                    className="rounded-full"
-                  ></Image>
-                </div>
-                <div className="flex w-full justify-between items-center">
-                  <div>
-                    <strong className="capitalise">{user?.name}</strong>
-                    <div>
-                      <span className="text-sm">Hello</span>
-                    </div>
-                  </div>
-                  <span className="text-sm">12:00</span>
-                </div>
-              </div>
+              <UserItem key={index} user={user} onClick={onClick} />
             ))}
         </div>
       </div>
