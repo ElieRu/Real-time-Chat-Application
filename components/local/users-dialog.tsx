@@ -8,7 +8,6 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { User } from "lucide-react";
-import Search from "./search";
 import ListUsers from "./list-users";
 
 const UsersDialog = () => {
@@ -20,9 +19,9 @@ const UsersDialog = () => {
       <DialogContent style={{height: '400px'}} className="overflow-hidden">
         <DialogHeader style={{height: '400px'}} className="overflow-hidden">
           <DialogTitle>User</DialogTitle>
-          <div className="pr-1">
+          {/* <div className="pr-1">
             <Search />
-          </div>
+          </div> */}
           <DialogDescription className="overflow-hidden">
             <ListUsers/>
           </DialogDescription>
