@@ -3,8 +3,23 @@ import Navbar from "@/components/local/navbar";
 import Users from "@/components/local/users";
 import Chat from "@/components/local/chat";
 import Groups from "@/components/local/groups";
+import { UserForm } from "@/lib/definitions";
+import { useState } from "react";
 
 export default function Home() {
+
+  const [user, setUser] = useState<UserForm> ({})
+  const [selected, setSelected] = useState(false)
+
+  // if (user.name && user.email) {
+  //   setSelected(true);
+  // }
+
+  const selectUser = (user: UserForm) => {
+    setSelected(true);
+    setUser(user)
+    return user
+  }
 
   return (
     <div
@@ -15,8 +30,8 @@ export default function Home() {
       
       <div style={{ height: "85%" }}>
         <div className="my-3 grid grid-cols-4 gap-4" style={{ height: "100%" }}>
-          <Users />
-          <Chat />
+          <Users onClick={selectUser} />
+          <Chat user={user} selected={selected} onClick={selectUser} />
           <Groups />
         </div>
       </div>

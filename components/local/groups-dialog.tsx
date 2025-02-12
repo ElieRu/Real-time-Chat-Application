@@ -18,7 +18,6 @@ const GroupsDialog = () => {
   const [search, setSearch] = useState("");
     const onChange: OnChange = (value) => {
       setSearch(value);
-      console.log(value)
       return value;
     };
 
