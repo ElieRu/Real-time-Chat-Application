@@ -1,15 +1,29 @@
-'use client'
+"use client";
+import { Messages } from "@/lib/definitions";
 import Image from "next/image";
-import React from "react";
-// import { io } from "socket.io-client";
+import React, { useEffect, useState } from "react";
+import { io } from "socket.io-client";
 
 const ChatContents = () => {
+  const [messages, setMessages] = useState<Messages>([]);
 
-  // const socket = io('http://localhost:3000')
+  useEffect(() => {
+    const socket = io("http://localhost:3001");
 
-  // socket.on('response', (response) => {
-  //   console.log(response);
-  // })
+    const m: Messages = [];
+
+    socket.on("response", (response) => {
+      m.push(response.message);
+      setMessages(m);
+    });
+
+    // return () => {
+    //   socket.disconnect();
+    // };
+    // console.log(messages);
+
+    console.log("chat selected");
+  }, []);
 
   return (
     <div
@@ -33,28 +47,30 @@ const ChatContents = () => {
         }}
       >
         <div>
-          <div className="flex p-2">
-            <div className="mr-2">
-              <Image
-                height={40}
-                width={40}
-                className="rounded-full"
-                src={"/me.png"}
-                alt="My profile"
-              ></Image>
-            </div>
-            <div className="bg-green-500 px-4 py-1 rounded-lg rounded-tl-none">
-              <div>
-                <span className="text-white">Hey!</span>
+          {messages.map((data, index) => (
+            <div className="flex p-2" key={index}>
+              <div className="mr-2">
+                <Image
+                  height={40}
+                  width={40}
+                  className="rounded-full"
+                  src={data.picture ? data.picture : "/me.png"}
+                  alt="My profile"
+                ></Image>
               </div>
-              <div style={{ marginTop: "-5px" }}>
-                <span className="text-gray-200" style={{ fontSize: "12px" }}>
-                  11:40 PM
-                </span>
+              <div className="bg-green-500 px-4 py-1 rounded-lg rounded-tl-none">
+                <div>
+                  <span className="text-white">{data.content}</span>
+                </div>
+                <div style={{ marginTop: "-5px" }}>
+                  <span className="text-gray-200" style={{ fontSize: "12px" }}>
+                    11:40 PM
+                  </span>
+                </div>
               </div>
             </div>
-          </div>
-          <div className="flex p-2">
+          ))}
+          {/* <div className="flex p-2">
             <div className="mr-2">
               <Image
                 height={40}
@@ -143,7 +159,7 @@ const ChatContents = () => {
                 alt="My profile"
               ></Image>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>
