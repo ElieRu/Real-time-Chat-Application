@@ -31,5 +31,7 @@ export interface Message {
     content: string;
   };
 
+  export type Messages = Message[];
+
   export type SubType = Readonly<string>
   export type PictureType = Readonly<string>
