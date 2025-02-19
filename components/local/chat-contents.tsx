@@ -1,29 +1,28 @@
 "use client";
-import { Messages } from "@/lib/definitions";
+import { Message, Messages } from "@/lib/definitions";
+
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { io } from "socket.io-client";
 
-const ChatContents = () => {
-  const [messages, setMessages] = useState<Messages>([]);
+const ChatContents = ({messages}: {messages: any[]}) => {
+  // const [messages, setMessages] = useState<Messages>([]);
+  // const updateState = () => {
+  //   const socket = io("http://localhost:3001");
+    // const i: Messages = [];
 
-  useEffect(() => {
-    const socket = io("http://localhost:3001");
+    // socket.on("response", (response) => {
+    //   i.push(response.message);
+    //   console.log(response.message);
+    // });
+  // };
+  // useEffect(() => {
+  //   updateState();
+  // }, []);
 
-    const m: Messages = [];
 
-    socket.on("response", (response) => {
-      m.push(response.message);
-      setMessages(m);
-    });
+  
 
-    // return () => {
-    //   socket.disconnect();
-    // };
-    // console.log(messages);
-
-    console.log("chat selected");
-  }, []);
 
   return (
     <div

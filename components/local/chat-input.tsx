@@ -1,50 +1,30 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "../ui/button";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { Message } from "@/lib/definitions";
+import { Message, Messages } from "@/lib/definitions";
 import { io } from "socket.io-client";
 import { useUser } from "@auth0/nextjs-auth0/client";
 
-const ChatInput = ({sendMessages}: {sendMessages: (message: Message) => void}) => {
+const ChatInput = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<Message>();
 
-  useEffect(() => {
-    const socket = io('http://localhost:3001');
-    const messages: string[] = [];
-
-    socket.on("response", (response) => {
-      messages.push(response);
-    });
-
-    return () => {
-      socket.disconnect();
-    };
-    console.log('chat selected');
-}, []);  
-
   const { user } = useUser();
+
   const onSubmit: SubmitHandler<Message> = (data) => {
     if (user?.sub && user?.picture) {
       data.sub = user?.sub;
       data.picture = user?.picture;
     }
 
-    const socket = io('http://localhost:3001');
-    const messages: string[] = [];
-
+    const socket = io("http://localhost:3001");
     socket.emit("message", {
       message: data,
-    });
-
-    socket.on("response", (response) => {
-      messages.push(response)
-      sendMessages(response);
-    });
+    });    
   };
 
   return (
