@@ -24,11 +24,12 @@ export type UserDatas = {
     name: string, 
     picture: string,
     status: string | null
-}
+} 
 export interface Message {
     sub?: string;
     picture: string;
     content: string;
+    time: string;
   };
 
   export type Messages = Message[];

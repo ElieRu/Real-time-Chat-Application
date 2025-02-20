@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "../ui/button";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { Message, Messages } from "@/lib/definitions";
+import { Message } from "@/lib/definitions";
 import { io } from "socket.io-client";
 import { useUser } from "@auth0/nextjs-auth0/client";
 
@@ -10,21 +10,26 @@ const ChatInput = () => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<Message>();
 
   const { user } = useUser();
 
-  const onSubmit: SubmitHandler<Message> = (data) => {
+  const onSubmit: SubmitHandler<Message> = (form) => {
     if (user?.sub && user?.picture) {
-      data.sub = user?.sub;
-      data.picture = user?.picture;
+      form.sub = user?.sub;
+      form.picture = user?.picture;
     }
 
     const socket = io("http://localhost:3001");
-    socket.emit("message", {
-      message: data,
-    });    
+
+    // const joinRoom = () => {
+    socket.emit("joinRoom", form.sub);
+    // }
+
+    socket.emit("sendMsg", form.sub, form);
+    reset();
   };
 
   return (

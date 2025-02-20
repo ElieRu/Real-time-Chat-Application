@@ -6,14 +6,26 @@ import NewGroup from "./new-group";
 import { UserForm, UserProfile } from "@/lib/definitions";
 
 const ChatBar = ({
-  user, onClick
+  user,
+  onClick,
 }: {
-  user: UserProfile,
-  onClick: (user: UserForm) => UserForm
+  user: UserProfile;
+  onClick: (user: UserForm) => UserForm;
 }) => {
+  // const [status, setStatus] = useState("");
 
-  
-  
+  // useEffect(() => {
+  //   const socket = io("http://localhost:3001");
+  //   const s: string = ''
+  //   socket.on("status", (data) => {
+  //     // s = data
+  //     // setStatus(data);
+  //     console.log(data)
+  //   });
+  // }, [status]);
+
+  // console.log(status);  
+
   return (
     <div className="flex items-center justify-between bg-gray-200 rounded-lg pr-2 drop-shadow-md">
       <div className="flex rounded-2xl p-2">
@@ -30,7 +42,9 @@ const ChatBar = ({
         <div>
           <strong>{user.name}</strong>
           <div style={{ marginTop: "-8px" }}>
-            <span className="text-sm text-green-500">{user?.status ? user?.status : 'Connected'}</span>
+            <span className="text-sm text-green-500">
+              {user?.status ? user?.status : "Connected"}
+            </span>
           </div>
         </div>
       </div>
