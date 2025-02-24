@@ -9,6 +9,9 @@ const UserSchema = new mongoose.Schema({
         required: true,
         unique: true
     },
+    sub: {
+        type: String
+    },
     picture: {
         type: String
     }

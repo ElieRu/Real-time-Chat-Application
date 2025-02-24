@@ -9,23 +9,32 @@ import { io } from "socket.io-client";
 const ChatContents = ({ selectedUser }: { selectedUser: UserProfile }) => {
   const { user } = useUser();
   const [sub, setSub] = useState<string | undefined | null>("");
+  const [roomName, setRoomName] = useState("");
+
   useEffect(() => {
-    if (user?.sub) {
+    if (user?.sub && selectedUser.sub) {
       setSub(user.sub);
+      // setRoomName('selectedUser.sub');
+      // console.log(user?.sub + selectedUser.sub);
     }
-  }, [user]);
+  }, [user?.sub, selectedUser.sub]);
 
   const [messages, setMessages] = useState<Messages[]>([]);
   useEffect(() => {
     const socket = io("http://localhost:3001");
     const msgTmp: Messages = [];
-    socket.emit("joinRoom", sub);
-    socket.on("revieveMsg", (message) => {
+
+    socket.emit("joinRoom", {
+      type: "fetchMsg",
+      selected_sub: selectedUser.sub,
+      user_sub: user?.sub,
+    });
+
+    socket.on("recieveMsg", (message) => {
       msgTmp.push(message);
-      console.log(message);
       setMessages([...messages, msgTmp]);
     });
-  }, [messages, sub]);
+  }, [messages, user?.sub, selectedUser.sub]);
 
   return (
     <div

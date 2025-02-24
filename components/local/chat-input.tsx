@@ -1,12 +1,12 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "../ui/button";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { Message } from "@/lib/definitions";
+import { Message, UserProfile } from "@/lib/definitions";
 import { io } from "socket.io-client";
 import { useUser } from "@auth0/nextjs-auth0/client";
 
-const ChatInput = () => {
+const ChatInput = ({ selectedUser }: { selectedUser: UserProfile }) => {
   const {
     register,
     handleSubmit,
@@ -15,6 +15,22 @@ const ChatInput = () => {
   } = useForm<Message>();
 
   const { user } = useUser();
+
+  const [roomName, setRoomName] = useState({
+    type: "",
+    selected_user: "",
+    user_sub: "",
+  });
+
+  useEffect(() => {
+    if (user?.sub && selectedUser?.sub) {
+      setRoomName({
+        type: "createMsg",
+        selected_user: selectedUser?.sub,
+        user_sub: user?.sub,
+      });
+    }
+  }, [user?.sub, selectedUser?.sub]);
 
   const onSubmit: SubmitHandler<Message> = (form) => {
     if (user?.sub && user?.picture) {
@@ -25,10 +41,10 @@ const ChatInput = () => {
     const socket = io("http://localhost:3001");
 
     // const joinRoom = () => {
-    socket.emit("joinRoom", form.sub);
+    socket.emit("joinRoom", roomName);
     // }
 
-    socket.emit("sendMsg", form.sub, form);
+    socket.emit("sendMsg", roomName, form);
     reset();
   };
 
