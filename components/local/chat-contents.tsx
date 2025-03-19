@@ -1,5 +1,6 @@
 "use client";
-import { Messages, UserProfile } from "@/lib/definitions";
+import { fetchMessages } from "@/lib/datas";
+import { Messages, selected_user, UserProfile } from "@/lib/definitions";
 import { useUser } from "@auth0/nextjs-auth0/client";
 
 import Image from "next/image";
@@ -9,30 +10,38 @@ import { io } from "socket.io-client";
 const ChatContents = ({ selectedUser }: { selectedUser: UserProfile }) => {
   const { user } = useUser();
   const [sub, setSub] = useState<string | undefined | null>("");
-  const [roomName, setRoomName] = useState("");
+  const [messages, setMessages] = useState<Messages>([]);
 
   useEffect(() => {
     if (user?.sub && selectedUser.sub) {
       setSub(user.sub);
-      // setRoomName('selectedUser.sub');
-      // console.log(user?.sub + selectedUser.sub);
     }
   }, [user?.sub, selectedUser.sub]);
 
-  const [messages, setMessages] = useState<Messages[]>([]);
+  const getMesages = async (selectedUser: selected_user) => {
+    setMessages(await fetchMessages(selectedUser));
+  }
+
+  useEffect(() => {
+    getMesages(selectedUser.sub);
+  }, [selectedUser.sub]);
+
   useEffect(() => {
     const socket = io("http://localhost:3001");
     const msgTmp: Messages = [];
 
     socket.emit("joinRoom", {
-      type: "fetchMsg",
-      selected_sub: selectedUser.sub,
+      selected_user: selectedUser.sub,
       user_sub: user?.sub,
     });
 
-    socket.on("recieveMsg", (message) => {
-      msgTmp.push(message);
-      setMessages([...messages, msgTmp]);
+    // socket.on("recentMsg", (response) => {
+    //   setMessages(response);
+    // });
+
+    socket.on("recieveMsg", (response) => {
+      // messages.push(response);
+      setMessages([...messages, response]);
     });
   }, [messages, user?.sub, selectedUser.sub]);
 
@@ -56,18 +65,18 @@ const ChatContents = ({ selectedUser }: { selectedUser: UserProfile }) => {
           marginRight: "10px",
         }}
       >
-        {messages[0] && (
+        {messages && (
           <div style={{ width: "100%" }}>
-            {messages[0].map((data, index) => (
+            {messages.map((data, index) => (
               <div
                 className={
-                  sub == data.sub
+                  sub == data.user_sub
                     ? `flex p-2 flex-row-reverse items-center`
                     : `flex p-2`
                 }
                 key={index}
               >
-                <div className={sub == data.sub ? `ml-2` : "mr-2"}>
+                <div className={sub == data.user_sub ? `ml-2` : "mr-2"}>
                   <Image
                     height={40}
                     width={40}
@@ -78,7 +87,7 @@ const ChatContents = ({ selectedUser }: { selectedUser: UserProfile }) => {
                 </div>
                 <div
                   className={
-                    sub == data.sub
+                    sub == data.user_sub
                       ? "bg-green-500 px-4 py-1 rounded-lg rounded-tr-none"
                       : "bg-gray-500 px-4 py-1 rounded-lg rounded-tl-none"
                   }

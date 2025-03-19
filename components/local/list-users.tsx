@@ -7,7 +7,7 @@ import { fetchUsers } from "@/lib/datas";
 import Search from "./search";
 import UserItem from "./user-item";
 
-const ListUsers = ({onClick}: {onClick: (user: UserForm) => UserForm}) => {
+const ListUsers = ({ onClick }: { onClick: (user: UserForm) => UserForm }) => {
   const [search, setSearch] = useState("");
   const onChange: OnChange = (value) => {
     setSearch(value);
@@ -26,8 +26,6 @@ const ListUsers = ({onClick}: {onClick: (user: UserForm) => UserForm}) => {
   useEffect(() => {
     getUsers(user);
   }, [user]);
-
-  
 
   return (
     <>

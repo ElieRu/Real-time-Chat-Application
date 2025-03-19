@@ -26,13 +26,19 @@ export type UserDatas = {
     status: string | null
 } 
 export interface Message {
-    sub: string;
+    _id: string | null | undefined;
+    user_sub: string;
+    selected_user_sub: string | null | undefined;
     picture: string;
     content: string;
     time: string;
+    createdAt: string | null | undefined;
+    updatedAt: string | null | undefined;
+    __v: number
   };
 
   export type Messages = Message[];
 
   export type SubType = Readonly<string>
   export type PictureType = Readonly<string>
+  export type selected_user = string | null | undefined
