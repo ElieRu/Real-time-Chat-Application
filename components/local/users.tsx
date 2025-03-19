@@ -2,7 +2,12 @@
 import { UserForm } from "@/lib/definitions";
 import ListUsers from "./list-users";
 
-export default function Users({onClick}: {onClick: (user: UserForm) => UserForm}) {
+export default function Users({
+  onClick,
+}: {
+  onClick: (user: UserForm) => UserForm;
+}) {
+  
 
   return (
     <div

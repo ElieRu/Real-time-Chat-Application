@@ -17,7 +17,7 @@ const ChatInput = ({ selectedUser }: { selectedUser: UserProfile }) => {
   const { user } = useUser();
 
   const [roomName, setRoomName] = useState({
-    type: "",
+    // type: "",
     selected_user: "",
     user_sub: "",
   });
@@ -25,7 +25,7 @@ const ChatInput = ({ selectedUser }: { selectedUser: UserProfile }) => {
   useEffect(() => {
     if (user?.sub && selectedUser?.sub) {
       setRoomName({
-        type: "createMsg",
+        // type: "createMsg",
         selected_user: selectedUser?.sub,
         user_sub: user?.sub,
       });
@@ -33,8 +33,9 @@ const ChatInput = ({ selectedUser }: { selectedUser: UserProfile }) => {
   }, [user?.sub, selectedUser?.sub]);
 
   const onSubmit: SubmitHandler<Message> = (form) => {
-    if (user?.sub && user?.picture) {
-      form.sub = user?.sub;
+    if (user?.sub && user?.picture && selectedUser) {
+      form.user_sub = user?.sub;
+      form.selected_user_sub = selectedUser?.sub;
       form.picture = user?.picture;
     }
 
@@ -44,7 +45,7 @@ const ChatInput = ({ selectedUser }: { selectedUser: UserProfile }) => {
     socket.emit("joinRoom", roomName);
     // }
 
-    socket.emit("sendMsg", roomName, form);
+    socket.emit("sendMsg", form);
     reset();
   };
 
