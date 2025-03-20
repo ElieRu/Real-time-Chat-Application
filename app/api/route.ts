@@ -1,5 +1,5 @@
 import db from "@/lib/db";
-import { UserForm, UserEmail, Users } from "@/lib/definitions";
+import { UserProfile, UserEmail, Users } from "@/lib/definitions";
 import { User } from "@/lib/models";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -12,9 +12,8 @@ export async function GET(request: NextRequest) {
         email: form_user.get('email'),
         name: form_user.get('name'),
         picture: form_user.get('picture'),
+        status: 'online',
     }
-
-    // const email: Readonly<UserEmail> = form.email
 
     const get_users = async (email: UserEmail, option: boolean) => {
         const users = await User.aggregate([
@@ -27,7 +26,7 @@ export async function GET(request: NextRequest) {
         return users;
     }
 
-    const verification = async (email: UserEmail, form_user: UserForm, users: Users) => {
+    const verification = async (email: UserEmail, form_user: UserProfile, users: Users) => {
         if (users.length > 0) {
             const all_users = await get_users(email, false);
             return all_users;
@@ -39,8 +38,16 @@ export async function GET(request: NextRequest) {
         }
     }
 
+    const currentUser = async (email: UserEmail) => {
+        const myUser = await User.find({
+            email: email
+        }).exec();
+        return myUser;
+    }
+
     const users = await get_users(form.email, true);
     const verify = await verification(form.email, form, users);
+    const geCurrentUser = await currentUser(form.email);
     
-    return NextResponse.json(verify);
+    return NextResponse.json([verify, geCurrentUser]);
 }

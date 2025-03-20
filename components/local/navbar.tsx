@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Menubar,
   MenubarContent,
@@ -14,36 +14,73 @@ import {
 import { useUser } from "@auth0/nextjs-auth0/client";
 import Image from "next/image";
 import Link from "next/link";
+import { io } from "socket.io-client";
+import { UserProfile, VerifyCurrent } from "@/lib/definitions";
+import { currentUser, fetchUsers } from "@/lib/datas";
 
 const Navbar = () => {
   const { user } = useUser();
+  const [connectedUser, setConnectedUser] = useState<UserProfile>({});
 
   const handleClick = () => {
     alert("good");
   };
 
+  const getCurrentUser = async (
+      user: UserProfile | undefined,
+      current_user: VerifyCurrent
+    ) => {
+      if (user) {
+        setConnectedUser(await fetchUsers(user, current_user));
+      }
+    };
+  
+    useEffect(() => {
+      getCurrentUser(user, true);
+    }, [user]); 
+
+
+  // useEffect(() => {
+  //   const socket = io("http://localhost:3001");
+  //   if (user) {
+  //     socket.emit("isConnected", user.email);
+  //     socket.emit("isDisconnected", user.email);
+  //   }
+  // }, [user]);
+
   return (
     <div className="flex justify-between items-center px-1">
       <div>
-        <Link href={'/'}>{"</>"}</Link>
+        <Link href={"/"}>{"</>"}</Link>
       </div>
       <div>
-        <Menubar style={{height: '50px'}}>
+        <Menubar style={{ height: "50px" }}>
           <MenubarMenu>
             <MenubarTrigger>
-              {user ? <div className="flex items-center">
-                <Image
-                  width={30}
-                  height={30}
-                  className="rounded-2xl mr-2"
-                  src={user?.picture ? user?.picture : "/user.png"}
-                  alt="My profile"
-                />
-                <div>
-                  <div style={{marginBottom: '-5px'}} className="text-start">{user?.name}</div>
-                  <span className="text-sm text-gray-500">{user?.email}</span>
+              {user ? (
+                <div className="flex items-center">
+                  <Image
+                    width={30}
+                    height={30}
+                    className="rounded-2xl mr-2"
+                    src={connectedUser.picture ? connectedUser.picture : "/user.png"}
+                    alt="My profile"
+                  />
+                  <div className="text-start">
+                    <div
+                      style={{ marginBottom: "-5px" }}
+                      className="text-start"
+                    >
+                      {connectedUser.name}
+                    </div>
+                    <span className="text-sm text-green-500">
+                      {connectedUser.status}
+                    </span>
+                  </div>
                 </div>
-              </div> : 'Not Connected'}
+              ) : (
+                "Not Connected"
+              )}
             </MenubarTrigger>
             <MenubarContent>
               <MenubarRadioGroup value="benoit">
