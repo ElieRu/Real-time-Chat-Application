@@ -1,10 +1,10 @@
-import { UserForm } from "@/lib/definitions";
+import { UserProfile } from "@/lib/definitions";
 import Image from "next/image";
 import React from "react";
 
-const UserItem = ({ user, onClick }: { user: UserForm, onClick: (user: UserForm) => UserForm }) => {
+const UserItem = ({ user, onClick }: { user: UserProfile, onClick: (user: UserProfile) => UserProfile }) => {
 
-  const handleClick = (user: UserForm) => {
+  const handleClick = (user: UserProfile) => {
     onClick(user);
   };
   
@@ -30,7 +30,7 @@ const UserItem = ({ user, onClick }: { user: UserForm, onClick: (user: UserForm)
             <span className="text-sm">Hello</span>
           </div>
         </div>
-        <span className="text-sm">12:00</span>
+        <span className="text-sm">{user?.status}</span>
       </div>
     </div>
   );

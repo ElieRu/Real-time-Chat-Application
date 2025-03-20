@@ -35,12 +35,7 @@ const ChatContents = ({ selectedUser }: { selectedUser: UserProfile }) => {
       user_sub: user?.sub,
     });
 
-    // socket.on("recentMsg", (response) => {
-    //   setMessages(response);
-    // });
-
     socket.on("recieveMsg", (response) => {
-      // messages.push(response);
       setMessages([...messages, response]);
     });
   }, [messages, user?.sub, selectedUser.sub]);
@@ -52,6 +47,7 @@ const ChatContents = ({ selectedUser }: { selectedUser: UserProfile }) => {
         height: "65%",
         width: "100%",
         position: "relative",
+        overflowAnchor: 'none'
       }}
     >
       <div
@@ -63,44 +59,45 @@ const ChatContents = ({ selectedUser }: { selectedUser: UserProfile }) => {
           scrollbarColor: "gray transparent",
           scrollbarWidth: "thin",
           marginRight: "10px",
+          overflowAnchor: 'unset',
         }}
       >
         {messages && (
           <div style={{ width: "100%" }}>
-            {messages.map((data, index) => (
+            {messages.map((message, index) => (
               <div
                 className={
-                  sub == data.user_sub
+                  sub == message.user_sub
                     ? `flex p-2 flex-row-reverse items-center`
                     : `flex p-2`
                 }
                 key={index}
               >
-                <div className={sub == data.user_sub ? `ml-2` : "mr-2"}>
+                <div className={sub == message.user_sub ? `ml-2` : "mr-2"}>
                   <Image
                     height={40}
                     width={40}
                     className="rounded-full"
-                    src={data.picture ? data.picture : "/me.png"}
+                    src={message.picture ? message.picture : "/me.png"}
                     alt="My profile"
                   ></Image>
                 </div>
                 <div
                   className={
-                    sub == data.user_sub
+                    sub == message.user_sub
                       ? "bg-green-500 px-4 py-1 rounded-lg rounded-tr-none"
                       : "bg-gray-500 px-4 py-1 rounded-lg rounded-tl-none"
                   }
                 >
                   <div>
-                    <span className="text-white">{data.content}</span>
+                    <span className="text-white">{message.content}</span>
                   </div>
                   <div style={{ marginTop: "-5px" }}>
                     <span
                       className="text-gray-200"
                       style={{ fontSize: "12px" }}
                     >
-                      {data.time}
+                      {message.time}
                     </span>
                   </div>
                 </div>

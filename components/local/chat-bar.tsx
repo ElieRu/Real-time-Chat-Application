@@ -1,30 +1,19 @@
 import Image from "next/image";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import UsersDialog from "./users-dialog";
 import GroupsDialog from "./groups-dialog";
 import NewGroup from "./new-group";
 import { UserForm, UserProfile } from "@/lib/definitions";
+import { io } from "socket.io-client";
 
 const ChatBar = ({
   user,
   onClick,
 }: {
   user: UserProfile;
-  onClick: (user: UserForm) => UserForm;
+  onClick: (user: UserProfile) => UserProfile;
 }) => {
-  // const [status, setStatus] = useState("");
-
-  // useEffect(() => {
-  //   const socket = io("http://localhost:3001");
-  //   const s: string = ''
-  //   socket.on("status", (data) => {
-  //     // s = data
-  //     // setStatus(data);
-  //     console.log(data)
-  //   });
-  // }, [status]);
-
-  // console.log(status);  
+  const [status, setStatus] = useState("");
 
   return (
     <div className="flex items-center justify-between bg-gray-200 rounded-lg pr-2 drop-shadow-md">

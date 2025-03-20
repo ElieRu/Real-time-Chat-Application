@@ -5,6 +5,7 @@ import Chat from "@/components/local/chat";
 import Groups from "@/components/local/groups";
 import { UserForm } from "@/lib/definitions";
 import { useState } from "react";
+
 export default function Home() {
   const [user, setUser] = useState<UserForm>({});
   const [selected, setSelected] = useState(false);
@@ -13,9 +14,9 @@ export default function Home() {
     setSelected(true);
     setUser(user);
     return user;
-  };
+  };  
 
-  
+
 
   return (
     <div
