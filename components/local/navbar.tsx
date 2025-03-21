@@ -14,9 +14,8 @@ import {
 import { useUser } from "@auth0/nextjs-auth0/client";
 import Image from "next/image";
 import Link from "next/link";
-import { io } from "socket.io-client";
 import { UserProfile, VerifyCurrent } from "@/lib/definitions";
-import { currentUser, fetchUsers } from "@/lib/datas";
+import { fetchUsers } from "@/lib/datas";
 
 const Navbar = () => {
   const { user } = useUser();

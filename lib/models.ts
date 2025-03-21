@@ -17,7 +17,10 @@ const UserSchema = new mongoose.Schema({
     },
     status: {
         type: String
-    }
+    },
+    last_message: {
+      type: String,
+    },
 }, { 
     timestamps: true 
 });

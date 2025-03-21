@@ -78,7 +78,7 @@ const ChatContents = ({ selectedUser }: { selectedUser: UserProfile }) => {
                     height={40}
                     width={40}
                     className="rounded-full"
-                    src={message.picture ? message.picture : "/me.png"}
+                    src={message?.picture ? message?.picture : "/me.png"}
                     alt="My profile"
                   ></Image>
                 </div>

@@ -22,7 +22,7 @@ const ChatBar = ({
           <Image
             height={40}
             width={40}
-            src={user.picture ? user.picture : "/me.png"}
+            src={user?.picture ? user?.picture : "/me.png"}
             alt="User Profile"
             className="rounded-full"
             style={{ width: "auto", height: "auto" }}
