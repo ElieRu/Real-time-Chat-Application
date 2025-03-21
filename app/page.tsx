@@ -4,17 +4,29 @@ import Users from "@/components/local/users";
 import Chat from "@/components/local/chat";
 import Groups from "@/components/local/groups";
 import { UserForm } from "@/lib/definitions";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { io } from "socket.io-client";
+import { useUser } from "@auth0/nextjs-auth0/client";
 
 export default function Home() {
-  const [user, setUser] = useState<UserForm>({});
+  const [selectedUser, setSelectedUser] = useState<UserForm>({});
   const [selected, setSelected] = useState(false);
+  const { user } = useUser();
 
   const selectUser = (user: UserForm) => {
     setSelected(true);
-    setUser(user);
+    setSelectedUser(user);
     return user;
-  };  
+  }; 
+
+  // isConnected and isDisconnected
+  useEffect(() => {
+    const socket = io("http://localhost:3001");
+    if (user) {
+      socket.emit("isConnected", user.email);
+      socket.emit("isDisconnected", user.email);
+    }
+  }, [user]);
 
 
 
@@ -28,7 +40,7 @@ export default function Home() {
       <div style={{ height: "85%" }}>
         <div className="my-3 grid grid-cols-4 gap-4" style={{ height: "100%" }}>
           <Users onClick={selectUser} />
-          <Chat user={user} selected={selected} onClick={selectUser} />
+          <Chat user={selectedUser} selected={selected} onClick={selectUser} />
           <Groups />
         </div>
       </div>
