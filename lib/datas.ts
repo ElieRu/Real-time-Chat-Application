@@ -1,21 +1,5 @@
 import { selected_user, UserProfile, VerifyCurrent } from "./definitions";
 
-export const currentUser = (email: string | null | undefined) => {
-    console.log(email);
-    // try {
-    //     const response = await fetch(`/api?email=${email}`, {
-    //         method: 'GET',
-    //         headers: {
-    //             'Content-Type': 'application/json'
-    //         }
-    //     })
-    //     const currentUser = await response.json();
-    //     console.log(currentUser);
-    // } catch (error) {
-    //     console.log(error);        
-    // }
-}
-
 export const fetchUsers = async (user: UserProfile, currentUser: VerifyCurrent) => {
     try {
         const response = await fetch(`/api?sub=${user?.sub}&email=${user?.email}&name=${user?.name}&picture=${user?.picture}`, {
@@ -30,6 +14,7 @@ export const fetchUsers = async (user: UserProfile, currentUser: VerifyCurrent) 
             // Else You get all users
             return users[1][0];
         } else {
+            console.log(users[0]);
             return users[0];
         }
     } catch (error) {

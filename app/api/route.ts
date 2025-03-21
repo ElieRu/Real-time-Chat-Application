@@ -13,6 +13,7 @@ export async function GET(request: NextRequest) {
         name: form_user.get('name'),
         picture: form_user.get('picture'),
         status: 'online',
+        last_message: 'Empty Message',
     }
 
     const get_users = async (email: UserEmail, option: boolean) => {

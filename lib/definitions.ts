@@ -3,7 +3,8 @@ import { UserProfile as UserImported } from "@auth0/nextjs-auth0/client"
 export type UserForm = UserImported
 
 export interface UserFieldsAdded {
-    status?: string | null | undefined
+    status?: string | null | undefined,
+    last_message?: string | null | undefined
 }
 
 export type UserProfile = UserImported & UserFieldsAdded

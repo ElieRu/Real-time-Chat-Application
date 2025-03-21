@@ -14,9 +14,8 @@ import {
 import { useUser } from "@auth0/nextjs-auth0/client";
 import Image from "next/image";
 import Link from "next/link";
-import { io } from "socket.io-client";
 import { UserProfile, VerifyCurrent } from "@/lib/definitions";
-import { currentUser, fetchUsers } from "@/lib/datas";
+import { fetchUsers } from "@/lib/datas";
 
 const Navbar = () => {
   const { user } = useUser();
@@ -27,26 +26,17 @@ const Navbar = () => {
   };
 
   const getCurrentUser = async (
-      user: UserProfile | undefined,
-      current_user: VerifyCurrent
-    ) => {
-      if (user) {
-        setConnectedUser(await fetchUsers(user, current_user));
-      }
-    };
-  
-    useEffect(() => {
-      getCurrentUser(user, true);
-    }, [user]); 
+    user: UserProfile | undefined,
+    current_user: VerifyCurrent
+  ) => {
+    if (user) {
+      setConnectedUser(await fetchUsers(user, current_user));
+    }
+  };
 
-
-  // useEffect(() => {
-  //   const socket = io("http://localhost:3001");
-  //   if (user) {
-  //     socket.emit("isConnected", user.email);
-  //     socket.emit("isDisconnected", user.email);
-  //   }
-  // }, [user]);
+  useEffect(() => {
+    getCurrentUser(user, true);
+  }, [user]);
 
   return (
     <div className="flex justify-between items-center px-1">
@@ -63,7 +53,11 @@ const Navbar = () => {
                     width={30}
                     height={30}
                     className="rounded-2xl mr-2"
-                    src={connectedUser.picture ? connectedUser.picture : "/user.png"}
+                    src={
+                      connectedUser.picture
+                        ? connectedUser.picture
+                        : "/user.png"
+                    }
                     alt="My profile"
                   />
                   <div className="text-start">
