@@ -42,6 +42,9 @@ export interface Message {
 
   export type SubType = Readonly<string>
   export type PictureType = Readonly<string>
-  export type selected_user = string | null | undefined
+  export type findMessages = {
+    user_sub: string | null | undefined,
+    selected_user: string | null | undefined
+}
 
   export type VerifyCurrent = boolean | undefined | null

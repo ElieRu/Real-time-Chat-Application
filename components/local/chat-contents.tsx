@@ -1,6 +1,6 @@
 "use client";
 import { fetchMessages } from "@/lib/datas";
-import { Messages, selected_user, UserProfile } from "@/lib/definitions";
+import { Messages, findMessages, UserProfile } from "@/lib/definitions";
 import { useUser } from "@auth0/nextjs-auth0/client";
 
 import Image from "next/image";
@@ -11,20 +11,28 @@ const ChatContents = ({ selectedUser }: { selectedUser: UserProfile }) => {
   const { user } = useUser();
   const [sub, setSub] = useState<string | undefined | null>("");
   const [messages, setMessages] = useState<Messages>([]);
+  const [findMsg, setFindMsg] = useState<findMessages>({
+    user_sub: "",
+    selected_user: "",
+  });
 
   useEffect(() => {
     if (user?.sub && selectedUser.sub) {
       setSub(user.sub);
+      setFindMsg({
+        user_sub: user?.sub,
+        selected_user: selectedUser.sub,
+      });
     }
   }, [user?.sub, selectedUser.sub]);
 
-  const getMesages = async (selectedUser: selected_user) => {
+  const getMesages = async (selectedUser: findMessages) => {
     setMessages(await fetchMessages(selectedUser));
-  }
+  };
 
   useEffect(() => {
-    getMesages(selectedUser.sub);
-  }, [selectedUser.sub]);
+    getMesages(findMsg);
+  }, [findMsg]);
 
   useEffect(() => {
     const socket = io("http://localhost:3001");
@@ -47,7 +55,7 @@ const ChatContents = ({ selectedUser }: { selectedUser: UserProfile }) => {
         height: "65%",
         width: "100%",
         position: "relative",
-        overflowAnchor: 'none'
+        overflowAnchor: "none",
       }}
     >
       <div
@@ -59,7 +67,7 @@ const ChatContents = ({ selectedUser }: { selectedUser: UserProfile }) => {
           scrollbarColor: "gray transparent",
           scrollbarWidth: "thin",
           marginRight: "10px",
-          overflowAnchor: 'unset',
+          overflowAnchor: "unset",
         }}
       >
         {messages && (
@@ -73,15 +81,17 @@ const ChatContents = ({ selectedUser }: { selectedUser: UserProfile }) => {
                 }
                 key={index}
               >
-                <div className={sub == message.user_sub ? `ml-2` : "mr-2"}>
-                  <Image
-                    height={40}
-                    width={40}
-                    className="rounded-full"
-                    src={message?.picture ? message?.picture : "/me.png"}
-                    alt="My profile"
-                  ></Image>
-                </div>
+                {sub !== message.user_sub && (
+                  <div className={sub == message.user_sub ? `ml-2` : "mr-2"}>
+                    <Image
+                      height={40}
+                      width={40}
+                      className="rounded-full"
+                      src={message?.picture ? message?.picture : "/me.png"}
+                      alt="My profile"
+                    ></Image>
+                  </div>
+                )}
                 <div
                   className={
                     sub == message.user_sub
