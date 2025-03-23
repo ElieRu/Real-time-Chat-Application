@@ -24,6 +24,7 @@ const ListUsers = ({ onClick }: { onClick: (user: UserForm) => UserForm }) => {
 
   const { user } = useUser();
   const [users, setUsers] = useState<Users>([]);
+  const [lastMsg, setLastMsg] = useState<unknown[]>([]);
 
   const getUsers = async (
     user: UserProfile | undefined,
@@ -38,15 +39,32 @@ const ListUsers = ({ onClick }: { onClick: (user: UserForm) => UserForm }) => {
     getUsers(user, false);
   }, [user]);
 
+  // useEffect(() => {
+  //   let tmp = [];
+  //   for (let i = 0; i < users.length; i++) {
+  //     tmp.push(users[i].last_message);
+  //   }
+  //   setLastMsg(tmp);
+  // }, [users]);
+
   useEffect(() => {
     const socket = io("http://localhost:3001");
 
-    for (let i = 0; i < users.length; i++) {
-      socket.emit("userConnected", {
-        email: users[i].email,
-        status: users[i].status,
-      });
-    }
+    socket.emit("joinRoom", "name");
+
+    socket.on("updateUsersDatas", (response) => {
+      
+      // How to uppdate an attribute inside
+      // an array with setUser();
+      setUsers((users) =>
+        users.map((user) =>
+          user.sub === response.selected_user
+            ? { ...user, last_message: response.last_message }
+            : user
+        )
+      );
+    });
+    // }
   }, [users]);
 
   return (
@@ -72,7 +90,12 @@ const ListUsers = ({ onClick }: { onClick: (user: UserForm) => UserForm }) => {
                 : MyUser?.name && MyUser?.name.includes(search);
             })
             .map((user, index) => (
-              <UserItem key={index} user={user} onClick={onClick} />
+              <UserItem
+                key={index}
+                last_message={lastMsg}
+                user={user}
+                onClick={onClick}
+              />
             ))}
         </div>
       </div>

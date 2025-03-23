@@ -29,7 +29,7 @@ const ChatBar = ({
           />
         </div>
         <div>
-          <strong>{user.name}</strong>
+          <strong className="capitalize">{user.name}</strong>
           <div style={{ marginTop: "-8px" }}>
             <span className="text-sm text-green-500">
               {user?.status ? user?.status : "Connected"}

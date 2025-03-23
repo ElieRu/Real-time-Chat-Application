@@ -63,7 +63,7 @@ const Navbar = () => {
                   <div className="text-start">
                     <div
                       style={{ marginBottom: "-5px" }}
-                      className="text-start"
+                      className="text-start capitalize"
                     >
                       {connectedUser.name}
                     </div>

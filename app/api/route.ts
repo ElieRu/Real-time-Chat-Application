@@ -10,7 +10,7 @@ export async function GET(request: NextRequest) {
     const form = {
         sub: form_user.get('sub'),
         email: form_user.get('email'),
-        name: form_user.get('name'),
+        name: form_user.get('name')?.toLowerCase(),
         picture: form_user.get('picture'),
         status: 'online',
         last_message: 'Empty Message',

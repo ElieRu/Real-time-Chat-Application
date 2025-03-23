@@ -1,17 +1,23 @@
 import { UserProfile } from "@/lib/definitions";
 import Image from "next/image";
-import React from "react";
+import React, { useEffect } from "react";
 
 const UserItem = ({
   user,
   onClick,
+  last_message
 }: {
   user: UserProfile;
   onClick: (user: UserProfile) => UserProfile;
+  last_message: unknown[]
 }) => {
   const handleClick = (user: UserProfile) => {
     onClick(user);
   };
+
+  // useEffect(() => {
+  //   console.log(last_message);
+  // }, []);
 
   return (
     <div
@@ -30,7 +36,7 @@ const UserItem = ({
       </div>
       <div className="flex w-full justify-between items-center">
         <div>
-          <strong className="capitalise">{user?.name}</strong>
+          <strong className="capitalize">{user?.name}</strong>
           <div>
             <span className="text-gray-400" style={{ fontSize: "12px" }}>
               {user?.last_message && user?.last_message.length > 30
