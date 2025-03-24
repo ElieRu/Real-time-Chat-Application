@@ -1,5 +1,5 @@
 "use client";
-import { UserForm } from "@/lib/definitions";
+import { UserForm, UserProfile } from "@/lib/definitions";
 import ListUsers from "./list-users";
 
 export default function Users({
