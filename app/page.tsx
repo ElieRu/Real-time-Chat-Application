@@ -3,7 +3,9 @@ import Navbar from "@/components/local/navbar";
 import Users from "@/components/local/users";
 import Chat from "@/components/local/chat";
 import Groups from "@/components/local/groups";
-import { UserForm } from "@/lib/definitions";
+import {
+  UserForm,
+} from "@/lib/definitions";
 import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
 import { useUser } from "@auth0/nextjs-auth0/client";
@@ -13,11 +15,13 @@ export default function Home() {
   const [selected, setSelected] = useState(false);
   const { user } = useUser();
 
+  
+
   const selectUser = (user: UserForm) => {
     setSelected(true);
     setSelectedUser(user);
     return user;
-  }; 
+  };
 
   // isConnected and isDisconnected
   useEffect(() => {
@@ -27,8 +31,6 @@ export default function Home() {
       socket.emit("isDisconnected", user.email);
     }
   }, [user]);
-
-
 
   return (
     <div

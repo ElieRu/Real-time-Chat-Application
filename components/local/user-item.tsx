@@ -5,11 +5,9 @@ import React, { useEffect } from "react";
 const UserItem = ({
   user,
   onClick,
-  last_message
 }: {
   user: UserProfile;
   onClick: (user: UserProfile) => UserProfile;
-  last_message: unknown[]
 }) => {
   const handleClick = (user: UserProfile) => {
     onClick(user);
