@@ -40,11 +40,7 @@ const ChatInput = ({ selectedUser }: { selectedUser: UserProfile }) => {
     }
 
     const socket = io("http://localhost:3001");
-
-    // const joinRoom = () => {
     socket.emit("joinRoom", roomName);
-    // }
-
     socket.emit("sendMsg", form);
     reset();
   };

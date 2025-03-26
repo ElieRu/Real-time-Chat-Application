@@ -25,7 +25,21 @@ const UserSchema = new mongoose.Schema({
     timestamps: true 
 });
 
+const GroupSchema = new mongoose.Schema({
+    title: {
+        type: String,
+        required: true
+    },
+    userId: {
+        type: String,
+        required: true
+    }       
+}, {
+    timestamps: true
+});
+
 
 export const User = mongoose.models.Users || mongoose.model('User', UserSchema);
+export const Group = mongoose.models.Groups || mongoose.model('Group', GroupSchema);
 
 

@@ -48,3 +48,10 @@ export interface Message {
 }
 
   export type VerifyCurrent = boolean | undefined | null
+
+  export interface Group {
+    title: string,
+    userId: string
+  };
+
+  export type Groups = Group[];
