@@ -36,7 +36,6 @@ const ChatContents = ({ selectedUser }: { selectedUser: UserProfile }) => {
 
   useEffect(() => {
     const socket = io("http://localhost:3001");
-    const msgTmp: Messages = [];
 
     socket.emit("joinRoom", {
       selected_user: selectedUser.sub,
@@ -44,7 +43,16 @@ const ChatContents = ({ selectedUser }: { selectedUser: UserProfile }) => {
     });
 
     socket.on("recieveMsg", (response) => {
-      setMessages([...messages, response]);
+      // Show information
+      console.log(response);
+      // if (
+      //   (selectedUser.sub === response.selected_user_sub &&
+      //     user?.sub === response.user_sub) ||
+      //   (selectedUser.sub === response.user_sub &&
+      //     user?.sub === response.selected_user_sub)
+      // ) {
+        setMessages([...messages, response]);
+      // }
     });
   }, [messages, user?.sub, selectedUser.sub]);
 

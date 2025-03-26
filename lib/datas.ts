@@ -38,4 +38,21 @@ export const fetchMessages = async (findMessages: findMessages) => {
     }
 }
 
+export const fetchGroups = async () => {
+    try {
+        const response = await fetch(`/api/groups`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
 
+        const groups = await response.json();
+
+        return groups;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+// 
