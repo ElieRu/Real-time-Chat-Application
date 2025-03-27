@@ -50,6 +50,11 @@ export interface Message {
   export type VerifyCurrent = boolean | undefined | null
 
   export interface Group {
+    title: string | null | undefined,
+    userId: string | null | undefined
+  };
+
+  export type GroupForm = {
     title: string,
     userId: string
   };
