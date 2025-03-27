@@ -1,5 +1,5 @@
 "use client";
-import { Group, Groups, OnChange } from "@/lib/definitions";
+import { Group, OnChange } from "@/lib/definitions";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import NewGroup from "./new-group";
@@ -7,7 +7,11 @@ import Search from "./search";
 import { Groups as ListOfGroups } from "@/lib/definitions";
 import { fetchGroups } from "@/lib/datas";
 
-const ListGroups = () => {
+const ListGroups = ({
+  OnClick,
+}: {
+  OnClick: (group: Group) => void;
+}) => {
   const [search, setSearch] = useState("");
 
   const onChange: OnChange = (value) => {
@@ -55,6 +59,7 @@ const ListGroups = () => {
                 className="mt-2 flex items-center border rounded-lg p-2 hover:bg-green-500 hover:text-white hover:drop-shadow-md active:bg-green-300"
                 style={{ cursor: "pointer" }}
                 key={index}
+                onClick={() => OnClick(group)}
               >
                 <div className="mr-2 rounded-full border">
                   <Image

@@ -66,7 +66,7 @@ const NewGroup = ({updateGroups}: {updateGroups: (groups: Groups) => void}) => {
               </div>
             )}
             <div className="my-2">
-              <Button type="submit">Submit</Button>
+              <Button disabled={user ? false : true} type="submit">Submit</Button>
             </div>
           </form>
         </AccordionContent>

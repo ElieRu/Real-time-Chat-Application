@@ -1,20 +1,18 @@
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import UsersDialog from "./users-dialog";
 import GroupsDialog from "./groups-dialog";
-import NewGroup from "./new-group";
-import { UserForm, UserProfile } from "@/lib/definitions";
-import { io } from "socket.io-client";
+import { Group, UserProfile } from "@/lib/definitions";
 
 const ChatBar = ({
   user,
+  group,
   onClick,
 }: {
   user: UserProfile;
+  group: Group;
   onClick: (user: UserProfile) => UserProfile;
 }) => {
-  const [status, setStatus] = useState("");
-
   return (
     <div className="flex items-center justify-between bg-gray-200 rounded-lg pr-2 drop-shadow-md">
       <div className="flex rounded-2xl p-2">
@@ -29,10 +27,11 @@ const ChatBar = ({
           />
         </div>
         <div>
-          <strong className="capitalize">{user.name}</strong>
+          {user.name && <strong className="capitalize">{user.name}</strong>}
+          {group.title && <strong className="capitalize">{group.title}</strong>}
           <div style={{ marginTop: "-8px" }}>
             <span className="text-sm text-green-500">
-              {user?.status ? user?.status : "Connected"}
+              {user?.status ? user?.status : "5 Memmbers"}
             </span>
           </div>
         </div>
@@ -43,7 +42,7 @@ const ChatBar = ({
         </div>
         <div className="lg:hidden">
           <GroupsDialog />
-          <NewGroup />
+          {/* <NewGroup /> */}
         </div>
       </div>
     </div>

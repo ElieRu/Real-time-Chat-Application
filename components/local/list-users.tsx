@@ -14,6 +14,7 @@ import { fetchUsers } from "@/lib/datas";
 import Search from "./search";
 import UserItem from "./user-item";
 import { io } from "socket.io-client";
+import { SubNav } from "./sub-nav";
 
 const ListUsers = ({
   onClick,
@@ -55,6 +56,7 @@ const ListUsers = ({
         )
       );
     });
+    // }
   }, [users]);
 
   return (
@@ -68,6 +70,7 @@ const ListUsers = ({
           scrollbarWidth: "thin",
         }}
       >
+        <SubNav />
         <div className="p-1 pr-2 pb-2">
           {users
             .filter((user) => {
