@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { Schema, SchemaType } from "mongoose";
 
 const UserSchema = new mongoose.Schema({ 
     name: {
@@ -31,7 +31,7 @@ const GroupSchema = new mongoose.Schema({
         required: true
     },
     userId: {
-        type: String,
+        type: Schema.Types.ObjectId,
         required: true
     }       
 }, {

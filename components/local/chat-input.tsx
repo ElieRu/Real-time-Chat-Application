@@ -17,27 +17,24 @@ const ChatInput = ({ selectedUser }: { selectedUser: UserProfile }) => {
   const { user } = useUser();
 
   const [roomName, setRoomName] = useState({
-    // type: "",
-    selected_user: "",
-    user_sub: "",
+    userId: "",
   });
 
   useEffect(() => {
     if (user?.sub && selectedUser?.sub) {
       setRoomName({
-        // type: "createMsg",
-        selected_user: selectedUser?.sub,
-        user_sub: user?.sub,
+        userId: selectedUser?.sub
       });
     }
   }, [user?.sub, selectedUser?.sub]);
 
   const onSubmit: SubmitHandler<Message> = (form) => {
     if (user?.sub && user?.picture && selectedUser) {
-      form.user_sub = user?.sub;
-      form.selected_user_sub = selectedUser?.sub;
+      form.userId = selectedUser?.sub;
       form.picture = user?.picture;
     }
+
+    console.log(form);
 
     const socket = io("http://localhost:3001");
     socket.emit("joinRoom", roomName);
