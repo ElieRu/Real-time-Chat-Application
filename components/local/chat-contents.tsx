@@ -44,7 +44,7 @@ const ChatContents = ({ selectedUser }: { selectedUser: UserProfile }) => {
 
     socket.on("recieveMsg", (response) => {
       // Show information
-      console.log(response);
+      // console.log(response);
       // if (
       //   (selectedUser.sub === response.selected_user_sub &&
       //     user?.sub === response.user_sub) ||

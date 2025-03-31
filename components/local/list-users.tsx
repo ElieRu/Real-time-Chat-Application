@@ -57,6 +57,7 @@ const ListUsers = ({
       );
     });
     // }
+    console.log(users);
   }, [users]);
 
   return (

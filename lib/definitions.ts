@@ -28,8 +28,7 @@ export type UserDatas = {
 } 
 export interface Message {
     _id: string | null | undefined;
-    user_sub: string;
-    selected_user_sub: string | null | undefined;
+    userId: string | null | undefined;
     picture: string;
     content: string;
     time: string;
@@ -44,7 +43,7 @@ export interface Message {
   export type PictureType = Readonly<string>
   export type findMessages = {
     user_sub: string | null | undefined,
-    selected_user: string | null | undefined
+    userId: string | null | undefined
 }
 
   export type VerifyCurrent = boolean | undefined | null
