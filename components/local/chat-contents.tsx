@@ -1,47 +1,45 @@
 "use client";
 import { fetchMessages } from "@/lib/datas";
 import { Messages, findMessages, UserProfile } from "@/lib/definitions";
+import { getCurrentUser } from "@/lib/utils";
 import { useUser } from "@auth0/nextjs-auth0/client";
-
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { io } from "socket.io-client";
 
 const ChatContents = ({ selectedUser }: { selectedUser: UserProfile }) => {
   const { user } = useUser();
-  const [sub, setSub] = useState<string | undefined | null>("");
   const [messages, setMessages] = useState<Messages>([]);
-  const [findMsg, setFindMsg] = useState<findMessages>({
-    user_sub: "",
-    selected_user: "",
-  });
+  const [connectedUser, setConnectedUser] = useState<UserProfile>({});
 
-  useEffect(() => {
-    if (user?.sub && selectedUser.sub) {
-      setSub(user.sub);
-      setFindMsg({
-        user_sub: user?.sub,
-        selected_user: selectedUser.sub,
-      });
-    }
-  }, [user?.sub, selectedUser.sub]);
-
-  const getMesages = async (selectedUser: findMessages) => {
-    setMessages(await fetchMessages(selectedUser));
+  const getUser = async (user: UserProfile | undefined) => {
+    setConnectedUser(await getCurrentUser(user, true));
   };
 
-  useEffect(() => {
-    getMesages(findMsg);
-  }, [findMsg]);
+  const getMesages = async (selectDataMsg: findMessages) => {
+    setMessages(await fetchMessages(selectDataMsg));
+  };
 
+  // Get the connected user
+  useEffect(() => {
+    if (user) {
+      getUser(user);
+    }
+  }, [user]);
+
+  // Select the conversation
+  useEffect(() => {
+    if (connectedUser && selectedUser) {
+      getMesages({
+        userId: connectedUser._id,
+        recieveId: selectedUser._id,
+      });
+    }
+  }, [connectedUser, selectedUser]);
+
+  // Real-Time informations with Socket.io
   useEffect(() => {
     const socket = io("http://localhost:3001");
-
-    socket.emit("joinRoom", {
-      selected_user: selectedUser.sub,
-      user_sub: user?.sub,
-    });
-
     socket.on("recieveMsg", (response) => {
       // Show information
       // console.log(response);
@@ -51,7 +49,7 @@ const ChatContents = ({ selectedUser }: { selectedUser: UserProfile }) => {
       //   (selectedUser.sub === response.user_sub &&
       //     user?.sub === response.selected_user_sub)
       // ) {
-        setMessages([...messages, response]);
+      setMessages([...messages, response]);
       // }
     });
   }, [messages, user?.sub, selectedUser.sub]);
@@ -83,26 +81,30 @@ const ChatContents = ({ selectedUser }: { selectedUser: UserProfile }) => {
             {messages.map((message, index) => (
               <div
                 className={
-                  sub == message.user_sub
+                  user?.sub == message.userId
                     ? `flex p-2 flex-row-reverse items-center`
                     : `flex p-2`
                 }
                 key={index}
               >
-                {sub !== message.user_sub && (
-                  <div className={sub == message.user_sub ? `ml-2` : "mr-2"}>
+                {user?.sub !== message.userId && (
+                  <div
+                    className={user?.sub == message.userId ? `ml-2` : "mr-2"}
+                  >
                     <Image
                       height={40}
                       width={40}
                       className="rounded-full"
-                      src={message?.picture ? message?.picture : "/me.png"}
+                      src={
+                        selectedUser.picture ? selectedUser.picture : "/me.png"
+                      }
                       alt="My profile"
                     ></Image>
                   </div>
                 )}
                 <div
                   className={
-                    sub == message.user_sub
+                    user?.sub == message.userId
                       ? "bg-green-500 px-4 py-1 rounded-lg rounded-tr-none"
                       : "bg-gray-500 px-4 py-1 rounded-lg rounded-tl-none"
                   }
@@ -115,7 +117,7 @@ const ChatContents = ({ selectedUser }: { selectedUser: UserProfile }) => {
                       className="text-gray-200"
                       style={{ fontSize: "12px" }}
                     >
-                      {message.time}
+                      {message.createdAt}
                     </span>
                   </div>
                 </div>

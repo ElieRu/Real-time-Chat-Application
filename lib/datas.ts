@@ -23,15 +23,14 @@ export const fetchUsers = async (user: UserProfile, currentUser: VerifyCurrent) 
 
 export const fetchMessages = async (findMessages: findMessages) => {
     try {
-        const response = await fetch(`http://localhost:3001/messages?user_sub=${findMessages.user_sub}&selected_user=${findMessages.selected_user}`, {
+        const response = await fetch(`http://localhost:3001/messages?userId=${findMessages.userId}&recieveId=${findMessages.recieveId}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
             }
         });
-
         const messages = await response.json();
-
+        
         return messages;
     } catch (error) {
         console.log(error);

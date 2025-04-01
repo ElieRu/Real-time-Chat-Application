@@ -44,20 +44,19 @@ const ListUsers = ({
 
   useEffect(() => {
     const socket = io("http://localhost:3001");
-    socket.emit("joinRoom", "name");
+    socket.emit("joinRoom");
     socket.on("updateUsersDatas", (response) => {
       // How to uppdate an attribute inside
       // an array with setUser();
-      setUsers((users) =>
-        users.map((user) =>
-          user.sub === response.selected_user_sub || user.sub === response.user_sub
-            ? { ...user, last_message: response.content }
-            : user
-        )
-      );
+      console.log(response);
+      // setUsers((users) =>
+        // users.map((user) =>
+        //   user.sub === response.selected_user_sub || user.sub === response.user_sub
+        //     ? { ...user, last_message: response.content }
+        //     : user
+        // )
+      // );
     });
-    // }
-    console.log(users);
   }, [users]);
 
   return (

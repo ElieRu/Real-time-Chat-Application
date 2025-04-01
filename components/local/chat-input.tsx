@@ -5,6 +5,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { Message, UserProfile } from "@/lib/definitions";
 import { io } from "socket.io-client";
 import { useUser } from "@auth0/nextjs-auth0/client";
+import { getCurrentUser } from "@/lib/utils";
 
 const ChatInput = ({ selectedUser }: { selectedUser: UserProfile }) => {
   const {
@@ -15,29 +16,27 @@ const ChatInput = ({ selectedUser }: { selectedUser: UserProfile }) => {
   } = useForm<Message>();
 
   const { user } = useUser();
+  const [connectedUser, setConnectedUser] = useState<UserProfile>({});
 
-  const [roomName, setRoomName] = useState({
-    userId: "",
-  });
+  const getUser = async (user: UserProfile | undefined) => {
+    setConnectedUser(await getCurrentUser(user, true));
+  };
 
+  // Get the connected user
   useEffect(() => {
-    if (user?.sub && selectedUser?.sub) {
-      setRoomName({
-        userId: selectedUser?.sub
-      });
+    if (user) {
+      getUser(user);
     }
-  }, [user?.sub, selectedUser?.sub]);
+  }, [user]);
 
   const onSubmit: SubmitHandler<Message> = (form) => {
-    if (user?.sub && user?.picture && selectedUser) {
-      form.userId = selectedUser?.sub;
-      form.picture = user?.picture;
+    if (connectedUser && selectedUser) {
+      form.userId = connectedUser._id;
+      form.recieverId = selectedUser._id;
     }
 
-    console.log(form);
-
     const socket = io("http://localhost:3001");
-    socket.emit("joinRoom", roomName);
+    socket.emit("joinRoom");
     socket.emit("sendMsg", form);
     reset();
   };

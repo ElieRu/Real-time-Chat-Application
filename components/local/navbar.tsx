@@ -14,8 +14,8 @@ import {
 import { useUser } from "@auth0/nextjs-auth0/client";
 import Image from "next/image";
 import Link from "next/link";
-import { UserProfile, VerifyCurrent } from "@/lib/definitions";
-import { fetchUsers } from "@/lib/datas";
+import { UserProfile } from "@/lib/definitions";
+import { getCurrentUser } from "@/lib/utils";
 
 const Navbar = () => {
   const { user } = useUser();
@@ -25,17 +25,14 @@ const Navbar = () => {
     alert("good");
   };
 
-  const getCurrentUser = async (
-    user: UserProfile | undefined,
-    current_user: VerifyCurrent
-  ) => {
+  const getUser = async (user: UserProfile | undefined) => {
     if (user) {
-      setConnectedUser(await fetchUsers(user, current_user));
+      setConnectedUser(await getCurrentUser(user, true));
     }
   };
 
   useEffect(() => {
-    getCurrentUser(user, true);
+    getUser(user);
   }, [user]);
 
   return (
