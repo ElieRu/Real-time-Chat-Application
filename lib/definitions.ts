@@ -4,7 +4,8 @@ export type UserForm = UserImported
 
 export interface UserFieldsAdded {
     status?: string | null | undefined,
-    last_message?: string | null | undefined
+    last_message?: string | null | undefined,
+    _id?: string | null | undefined;
 }
 
 export type UserProfile = UserImported & UserFieldsAdded
@@ -29,9 +30,8 @@ export type UserDatas = {
 export interface Message {
     _id: string | null | undefined;
     userId: string | null | undefined;
-    picture: string;
+    recieverId: string | null | undefined;
     content: string;
-    time: string;
     createdAt: string | null | undefined;
     updatedAt: string | null | undefined;
     __v: number
@@ -42,9 +42,10 @@ export interface Message {
   export type SubType = Readonly<string>
   export type PictureType = Readonly<string>
   export type findMessages = {
-    user_sub: string | null | undefined,
+    recieveId: string | null | undefined,
     userId: string | null | undefined
 }
+
 
   export type VerifyCurrent = boolean | undefined | null
 

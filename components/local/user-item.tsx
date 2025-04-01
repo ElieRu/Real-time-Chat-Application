@@ -1,6 +1,6 @@
 import { UserProfile } from "@/lib/definitions";
 import Image from "next/image";
-import React, { useEffect } from "react";
+import React from "react";
 
 const UserItem = ({
   user,
@@ -12,10 +12,6 @@ const UserItem = ({
   const handleClick = (user: UserProfile) => {
     onClick(user);
   };
-
-  // useEffect(() => {
-  //   console.log(last_message);
-  // }, []);
 
   return (
     <div
