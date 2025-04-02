@@ -1,5 +1,6 @@
 "use client";
 import {
+  findMessages,
   OnChange,
   UniqueUser,
   UserForm,
@@ -10,17 +11,14 @@ import {
 import React from "react";
 import { useEffect, useState } from "react";
 import { useUser } from "@auth0/nextjs-auth0/client";
-import { fetchUsers } from "@/lib/datas";
+import { fetchMessages, fetchUsers } from "@/lib/datas";
 import Search from "./search";
 import UserItem from "./user-item";
 import { io } from "socket.io-client";
 import { SubNav } from "./sub-nav";
+import { getCurrentUser } from "@/lib/utils";
 
-const ListUsers = ({
-  onClick,
-}: {
-  onClick: (user: UserForm) => UserForm;
-}) => {
+const ListUsers = ({ onClick }: { onClick: (user: UserForm) => UserForm }) => {
   const [search, setSearch] = useState("");
   const onChange: OnChange = (value) => {
     setSearch(value);
@@ -28,6 +26,7 @@ const ListUsers = ({
   };
   const [users, setUsers] = useState<UserProfile[]>([]);
   const { user } = useUser();
+  const [connectedUser, setConnectedUser] = useState<UserProfile>({});
 
   const getUsers = async (
     user: UserProfile | undefined,
@@ -38,24 +37,38 @@ const ListUsers = ({
     }
   };
 
+  const getUser = async (user: UserProfile | undefined) => {
+    setConnectedUser(await getCurrentUser(user, true));
+  };
+
+  // Get the connected user
+  useEffect(() => {
+    if (user) {
+      getUser(user);
+    }
+  }, [user]);
+
+  // Get all other users
   useEffect(() => {
     getUsers(user, false);
   }, [user]);
 
+  // Real-time informations with socket.io
   useEffect(() => {
     const socket = io("http://localhost:3001");
     socket.emit("joinRoom");
     socket.on("updateUsersDatas", (response) => {
       // How to uppdate an attribute inside
       // an array with setUser();
-      console.log(response);
-      // setUsers((users) =>
-        // users.map((user) =>
-        //   user.sub === response.selected_user_sub || user.sub === response.user_sub
-        //     ? { ...user, last_message: response.content }
-        //     : user
-        // )
-      // );
+      // console.log(response);
+      setUsers((users) =>
+        users.map((user) =>
+          user._id === response.recieverId ||
+          user._id === response.userId
+            ? { ...user, last_message: response.content }
+            : user
+        )
+      );
     });
   }, [users]);
 

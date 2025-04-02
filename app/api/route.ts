@@ -17,6 +17,28 @@ export async function GET(request: NextRequest) {
     }
 
     const get_users = async (email: UserEmail, option: boolean) => {
+        const t = [
+            {
+              '$lookup': {
+                'from': 'messages', 
+                'let': {
+                  'messageId': '$_id', 
+                  'userId': '$userId'
+                }, 
+                'pipeline': [
+                  {
+                    '$sort': {
+                      'createdAt': -1
+                    }
+                  }, {
+                    '$limit': 1
+                  }
+                ], 
+                'as': 'last_message'
+              }
+            }
+          ];
+          
         const users = await User.aggregate([
             {
                 $match: {

@@ -23,7 +23,7 @@ export const fetchUsers = async (user: UserProfile, currentUser: VerifyCurrent) 
 
 export const fetchMessages = async (findMessages: findMessages) => {
     try {
-        const response = await fetch(`http://localhost:3001/messages?userId=${findMessages.userId}&recieveId=${findMessages.recieveId}`, {
+        const response = await fetch(`http://localhost:3001/messages?userId=${findMessages.userId}&recieverId=${findMessages.recieverId}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
