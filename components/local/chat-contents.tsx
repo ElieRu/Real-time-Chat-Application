@@ -1,7 +1,7 @@
 "use client";
 import { fetchMessages } from "@/lib/datas";
 import { Messages, findMessages, UserProfile } from "@/lib/definitions";
-import { getCurrentUser } from "@/lib/utils";
+import { formatTime, getCurrentUser } from "@/lib/utils";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
@@ -29,30 +29,31 @@ const ChatContents = ({ selectedUser }: { selectedUser: UserProfile }) => {
 
   // Select the conversation
   useEffect(() => {
-    if (connectedUser && selectedUser) {
+    if (connectedUser._id && selectedUser._id) {
       getMesages({
         userId: connectedUser._id,
-        recieveId: selectedUser._id,
+        recieverId: selectedUser._id,
       });
     }
-  }, [connectedUser, selectedUser]);
+  }, [connectedUser._id, selectedUser._id]);
 
   // Real-Time informations with Socket.io
   useEffect(() => {
     const socket = io("http://localhost:3001");
+    socket.emit("joinRoom");
     socket.on("recieveMsg", (response) => {
       // Show information
-      // console.log(response);
-      // if (
-      //   (selectedUser.sub === response.selected_user_sub &&
-      //     user?.sub === response.user_sub) ||
-      //   (selectedUser.sub === response.user_sub &&
-      //     user?.sub === response.selected_user_sub)
-      // ) {
-      setMessages([...messages, response]);
-      // }
+      console.log(response);
+      if (
+        (selectedUser._id === response.recieverId &&
+          connectedUser._id === response.userId) ||
+        (selectedUser._id === response.userId &&
+          connectedUser._id === response.recieverId)
+      ) {
+        setMessages([...messages, response]);
+      }
     });
-  }, [messages, user?.sub, selectedUser.sub]);
+  }, [messages, connectedUser._id, selectedUser._id]);
 
   return (
     <div
@@ -81,15 +82,17 @@ const ChatContents = ({ selectedUser }: { selectedUser: UserProfile }) => {
             {messages.map((message, index) => (
               <div
                 className={
-                  user?.sub == message.userId
+                  connectedUser._id == message.userId
                     ? `flex p-2 flex-row-reverse items-center`
                     : `flex p-2`
                 }
                 key={index}
               >
-                {user?.sub !== message.userId && (
+                {connectedUser._id !== message.userId && (
                   <div
-                    className={user?.sub == message.userId ? `ml-2` : "mr-2"}
+                    className={
+                      connectedUser._id == message.userId ? `ml-2` : "mr-2"
+                    }
                   >
                     <Image
                       height={40}
@@ -104,7 +107,7 @@ const ChatContents = ({ selectedUser }: { selectedUser: UserProfile }) => {
                 )}
                 <div
                   className={
-                    user?.sub == message.userId
+                    connectedUser._id == message.userId
                       ? "bg-green-500 px-4 py-1 rounded-lg rounded-tr-none"
                       : "bg-gray-500 px-4 py-1 rounded-lg rounded-tl-none"
                   }
@@ -117,7 +120,7 @@ const ChatContents = ({ selectedUser }: { selectedUser: UserProfile }) => {
                       className="text-gray-200"
                       style={{ fontSize: "12px" }}
                     >
-                      {message.createdAt}
+                      {formatTime(message.createdAt)}
                     </span>
                   </div>
                 </div>

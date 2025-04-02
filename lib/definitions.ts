@@ -42,7 +42,7 @@ export interface Message {
   export type SubType = Readonly<string>
   export type PictureType = Readonly<string>
   export type findMessages = {
-    recieveId: string | null | undefined,
+    recieverId: string | null | undefined,
     userId: string | null | undefined
 }
 

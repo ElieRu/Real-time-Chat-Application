@@ -16,3 +16,12 @@ export const getCurrentUser = async (
       return await fetchUsers(user, current_user);
     }
   };
+
+  export const formatTime = (isoString: string | undefined | null) => {
+    if (isoString) {
+      const date = new Date(isoString);
+      const hours = date.getUTCHours()+2;
+      const minutes = date.getUTCMinutes();
+      return `${hours}:${minutes}`;
+    }
+  }
