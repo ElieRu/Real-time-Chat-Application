@@ -1,4 +1,5 @@
 import { UserProfile } from "@/lib/definitions";
+import { getLastMsg } from "@/lib/utils";
 import Image from "next/image";
 import React from "react";
 
@@ -33,9 +34,12 @@ const UserItem = ({
           <strong className="capitalize">{user?.name}</strong>
           <div>
             <span className="text-gray-400" style={{ fontSize: "12px" }}>
-              {user?.last_message && user?.last_message.length > 30
-                ? `${user?.last_message?.slice(0, 30)}...`
-                : user?.last_message}
+              {getLastMsg(user?.last_message)
+                ? getLastMsg(user?.last_message).content
+                : // getLastMsg(user?.last_message).length
+                  // ? `${user?.last_message?.slice(0, 30)}...`
+                  // : user?.last_message
+                  "Empty Message"}
             </span>
           </div>
         </div>
