@@ -17,36 +17,42 @@ export async function GET(request: NextRequest) {
     }
 
     const get_users = async (email: UserEmail, option: boolean) => {
-        const t = [
-            {
-              '$lookup': {
-                'from': 'messages', 
-                'let': {
-                  'messageId': '$_id', 
-                  'userId': '$userId'
-                }, 
-                'pipeline': [
-                  {
-                    '$sort': {
-                      'createdAt': -1
-                    }
-                  }, {
-                    '$limit': 1
-                  }
-                ], 
-                'as': 'last_message'
+    // try {
+      const agg = [
+        {
+            $lookup: {
+                from: "messages",
+                localField: '_id',
+                foreignField: 'userId',
+                // let: { id: '$_id', userId: '$userId'},
+                // pipeline: [
+                //     { $match: { $expr: { $eq: ['$userId', '$$id']}}},
+                //     { $sort: { createdAt: -1 }},
+                //     { $limit: 1 }
+                // ],
+                as: "last_message"
               }
-            }
-          ];
-          
-        const users = await User.aggregate([
-            {
-                $match: {
-                    email: option ? {$eq: email} : {$ne: email}
-                }
-            }
-        ]);
-        return users;
+        }, {
+            $match: { email: option ? {$eq: email} : {$ne: email}}
+        }
+    ];
+      
+      // agg.push({});
+
+      const users = await User.aggregate(agg);
+      return users;
+    // } catch (error) {
+    //   return [];
+    // }
+
+//   [
+//     {
+        // $match: {
+        //     email: option ? {$eq: email} : {$ne: email}
+        // }
+//     }
+// ]
+
     }
 
     const verification = async (email: UserEmail, form_user: UserProfile, users: Users) => {

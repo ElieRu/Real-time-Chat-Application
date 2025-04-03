@@ -3,6 +3,7 @@ import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
 import { VerifyCurrent } from "./definitions";
 import { fetchUsers } from "./datas";
+import { useEffect } from "react";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -24,4 +25,10 @@ export const getCurrentUser = async (
       const minutes = date.getUTCMinutes();
       return `${hours}:${minutes}`;
     }
+  }
+
+  export const getLastMsg = (msg: string | string[] | null | undefined) => {
+    if (Array.isArray(msg)) {
+      return msg.shift();
+    }    
   }

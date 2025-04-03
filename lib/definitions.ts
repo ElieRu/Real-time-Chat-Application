@@ -4,8 +4,10 @@ export type UserForm = UserImported
 
 export interface UserFieldsAdded {
     status?: string | null | undefined,
-    last_message?: string | null | undefined,
+    last_message?: string | string[] | null | undefined,
     _id?: string | null | undefined;
+    createdAt?: string | null | undefined;
+    updatedAt?: string | null | undefined;
 }
 
 export type UserProfile = UserImported & UserFieldsAdded
