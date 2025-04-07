@@ -1,7 +1,7 @@
 import { UserProfile } from "@/lib/definitions";
 import { getLastMsg } from "@/lib/utils";
 import Image from "next/image";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 const UserItem = ({
   user,
@@ -13,6 +13,23 @@ const UserItem = ({
   const handleClick = (user: UserProfile) => {
     onClick(user);
   };
+
+  const [lastMsg, setLastMsg] = useState<string | null | undefined>(null);
+
+  useEffect(() => {
+    let Tmp = {};
+    if (Array.isArray(user.last_message)) {
+      let lastElementArray = user.last_message.slice(-1);
+      let lastElement = lastElementArray[0];
+      console.log(lastElement);
+      // if (lastElement) {
+      // //   Tmp = TmpMsg;
+      //   if ("content" in lastElement) {
+      //     setLastMsg(lastElement.content);
+      //   }
+      // }
+    }
+  }, [user.last_message]);
 
   return (
     <div
@@ -34,12 +51,12 @@ const UserItem = ({
           <strong className="capitalize">{user?.name}</strong>
           <div>
             <span className="text-gray-400" style={{ fontSize: "12px" }}>
-              {getLastMsg(user?.last_message)
-                ? getLastMsg(user?.last_message).content
-                : // getLastMsg(user?.last_message).length
-                  // ? `${user?.last_message?.slice(0, 30)}...`
-                  // : user?.last_message
-                  "Empty Message"}
+              { lastMsg ? lastMsg : 'Empty Message' }
+              {/* {getLastMsg(user?.last_message) ? getLastMsg(user?.last_message) : "Empty Message"} */}
+              {/* { user.last_message } */}
+              {/* : getLastMsg(user?.last_message).length */}
+              {/* ? `${user?.last_message?.slice(0, 30)}...` */}
+              {/* : user?.last_message */}
             </span>
           </div>
         </div>
