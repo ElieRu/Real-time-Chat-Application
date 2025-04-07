@@ -26,24 +26,22 @@ export async function GET(request: NextRequest) {
                 foreignField: 'userId',
                 // let: { id: '$_id', userId: '$userId'},
                 // pipeline: [
-                //     { $match: { $expr: { $eq: ['$userId', '$$id']}}},
-                //     { $sort: { createdAt: -1 }},
-                //     { $limit: 1 }
+                // { $match: { $expr: { $eq: ['$userId', '$$id']}}},
+                // { $sort: { createdAt: -1 }},
+                // { $limit: 1 }
                 // ],
                 as: "last_message"
-              }
+            }
         }, {
             $match: { email: option ? {$eq: email} : {$ne: email}}
         }
     ];
       
-      // agg.push({});
-
       const users = await User.aggregate(agg);
       return users;
-    // } catch (error) {
-    //   return [];
-    // }
+      // } catch (error) {
+      // return [];
+      // }
 
 //   [
 //     {

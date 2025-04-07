@@ -27,8 +27,18 @@ export const getCurrentUser = async (
     }
   }
 
-  export const getLastMsg = (msg: string | string[] | null | undefined) => {
+  export const getLastMsg = (msg: string | string[]) => {
     if (Array.isArray(msg)) {
-      return msg.shift();
-    }    
+      let TmpMsg = msg.shift();
+      let Tmp = {};
+      if (TmpMsg) {
+        Tmp = TmpMsg;
+        if ("content" in Tmp) {
+          return Tmp.content;
+        }
+      }
+    }
   }
+
+
+
