@@ -14,6 +14,7 @@ export const fetchUsers = async (user: UserProfile, currentUser: VerifyCurrent) 
             // Else You get all users
             return users[1][0];
         } else {
+            console.log(users[0]);
             return users[0];
         }
     } catch (error) {

@@ -27,15 +27,20 @@ export const getCurrentUser = async (
     }
   }
 
-  export const getLastMsg = (msg: string | string[]) => {
+  export const getLastMsg = (msg: string | string[] | null | undefined) => {
+    let TmpMsg = {};
     if (Array.isArray(msg)) {
-      let TmpMsg = msg.shift();
-      let Tmp = {};
-      if (TmpMsg) {
-        Tmp = TmpMsg;
-        if ("content" in Tmp) {
-          return Tmp.content;
-        }
+      let lastElementArray = msg.slice(-1);
+      TmpMsg = lastElementArray[0];
+
+      if (msg.length == 0) {
+        return 'Empty Message'
+      }
+      
+      if ("content" in TmpMsg) {
+        return TmpMsg.content;
+      } else {
+        return ''
       }
     }
   }

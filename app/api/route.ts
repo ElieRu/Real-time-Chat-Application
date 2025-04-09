@@ -17,40 +17,34 @@ export async function GET(request: NextRequest) {
     }
 
     const get_users = async (email: UserEmail, option: boolean) => {
-    // try {
-      const agg = [
-        {
+        const agg = [{
             $lookup: {
                 from: "messages",
-                localField: '_id',
-                foreignField: 'userId',
-                // let: { id: '$_id', userId: '$userId'},
-                // pipeline: [
-                // { $match: { $expr: { $eq: ['$userId', '$$id']}}},
-                // { $sort: { createdAt: -1 }},
-                // { $limit: 1 }
-                // ],
-                as: "last_message"
-            }
-        }, {
+                let: { user_id: "$_id" },
+                pipeline: [{
+                    $match: {
+                        // $or: [
+                            // $or: [
+                            //     { $expr: { $eq: ['$userId', '$$user_id']} }, 
+                            //     { $expr: { $eq: ['$recieverId', '$$user_id']} }
+                            // ], 
+                            // { 
+                            // $and: [
+                            //     { $expr: { $eq: ['$userId', '$recieverId']} }, 
+                            //     { $expr: { $eq: ['$recieverId', '$$user_id']} }
+                            // ]
+                            // }
+                        // ]
+                    }
+                    }],
+                    as: "last_message"
+                }}, {
             $match: { email: option ? {$eq: email} : {$ne: email}}
         }
     ];
-      
-      const users = await User.aggregate(agg);
-      return users;
-      // } catch (error) {
-      // return [];
-      // }
-
-//   [
-//     {
-        // $match: {
-        //     email: option ? {$eq: email} : {$ne: email}
-        // }
-//     }
-// ]
-
+    
+    const users = await User.aggregate(agg);
+    return users;
     }
 
     const verification = async (email: UserEmail, form_user: UserProfile, users: Users) => {
