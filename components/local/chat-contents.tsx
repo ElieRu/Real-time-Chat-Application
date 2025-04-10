@@ -24,7 +24,7 @@ const ChatContents = ({ selectedUser }: { selectedUser: UserProfile }) => {
   useEffect(() => {
     if (user) {
       getUser(user);
-    }
+    } 
   }, [user]);
 
   // Select the conversation

@@ -1,6 +1,7 @@
 import db from "@/lib/db";
 import { UserProfile, UserEmail, Users } from "@/lib/definitions";
 import { User } from "@/lib/models";
+import mongoose, { Types } from "mongoose";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
@@ -16,35 +17,44 @@ export async function GET(request: NextRequest) {
         last_message: 'Empty Message',
     }
 
+    const verifyExisting = async (email: UserEmail) => {
+        // Check user's existing
+        // option is about users* or the connected user*
+        const checking_user = await User.exists({
+            email: email
+        });
+
+        return checking_user && checking_user._id;
+    }
+
     const get_users = async (email: UserEmail, option: boolean) => {
+
         const agg = [{
             $lookup: {
                 from: "messages",
                 let: { user_id: "$_id" },
-                pipeline: [{
+                pipeline: [{ 
                     $match: {
-                        // $or: [
-                            // $or: [
-                            //     { $expr: { $eq: ['$userId', '$$user_id']} }, 
-                            //     { $expr: { $eq: ['$recieverId', '$$user_id']} }
-                            // ], 
-                            // { 
-                            // $and: [
-                            //     { $expr: { $eq: ['$userId', '$recieverId']} }, 
-                            //     { $expr: { $eq: ['$recieverId', '$$user_id']} }
-                            // ]
-                            // }
-                        // ]
-                    }
-                    }],
-                    as: "last_message"
+                        $or: [{
+                            $and: [
+                                { $expr: { $eq: ['$recieverId', '$$user_id']} },
+                                { $expr: { $eq: ['$userId', await verifyExisting(email) && await verifyExisting(email)]} }, 
+                            ]}, {  
+                            $and: [
+                                { $expr: { $eq: ['$userId', '$$user_id']} }, 
+                                { $expr: { $eq: ['$recieverId', await verifyExisting(email) && await verifyExisting(email)]} }
+                            ]}
+                        ]}
+                    }, 
+                ],
+                as: "last_message"
                 }}, {
-            $match: { email: option ? {$eq: email} : {$ne: email}}
-        }
-    ];
-    
-    const users = await User.aggregate(agg);
-    return users;
+                    $match: { email: option ? {$eq: email} : {$ne: email}}
+                }
+        ];
+
+        const users = await User.aggregate(agg);
+        return users;
     }
 
     const verification = async (email: UserEmail, form_user: UserProfile, users: Users) => {
