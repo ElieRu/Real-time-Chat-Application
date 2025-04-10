@@ -34,7 +34,7 @@ const ListUsers = ({ onClick }: { onClick: (user: UserForm) => UserForm }) => {
   ) => {
     if (user) {
       setUsers(await fetchUsers(user, current_user));
-    }
+    } 
   };
 
   const getUser = async (user: UserProfile | undefined) => {
@@ -45,7 +45,7 @@ const ListUsers = ({ onClick }: { onClick: (user: UserForm) => UserForm }) => {
   useEffect(() => {
     if (user) {
       getUser(user);
-    }
+    } 
   }, [user]);
 
   // Get all other users

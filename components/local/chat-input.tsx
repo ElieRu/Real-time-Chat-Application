@@ -26,7 +26,7 @@ const ChatInput = ({ selectedUser }: { selectedUser: UserProfile }) => {
   useEffect(() => {
     if (user) {
       getUser(user);
-    }
+    } 
   }, [user]);
 
   const onSubmit: SubmitHandler<Message> = (form) => {

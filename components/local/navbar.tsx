@@ -28,7 +28,7 @@ const Navbar = () => {
   const getUser = async (user: UserProfile | undefined) => {
     if (user) {
       setConnectedUser(await getCurrentUser(user, true));
-    }
+    } 
   };
 
   useEffect(() => {
