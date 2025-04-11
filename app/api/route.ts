@@ -46,11 +46,13 @@ export async function GET(request: NextRequest) {
                             ]}
                         ]}
                     }, 
+                    // { $sort: {'createdAt': -1} },
                 ],
                 as: "last_message"
                 }}, {
-                    $match: { email: option ? {$eq: email} : {$ne: email}}
-                }
+                    $match: { email: option ? {$eq: email} : {$ne: email}
+                }                
+            }
         ];
 
         const users = await User.aggregate(agg);

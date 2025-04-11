@@ -19,9 +19,12 @@ const UserItem = ({
   );
 
   useEffect(() => {
-    setLastMsg(getLastMsg(user.last_message));
-    // console.log(user.last_message);
+    // setLastMsg(getLastMsg(user.last_message));
   }, [user.last_message]);
+
+  useEffect(() => {
+    // console.log(user);
+  }, [user]);
 
   return (
     <div
@@ -43,11 +46,12 @@ const UserItem = ({
           <strong className="capitalize">{user?.name}</strong>
           <div>
             <span className="text-gray-400" style={{ fontSize: "12px" }}>
-              {typeof lastMsg == "string"
+              {typeof user.last_message == 'string' ? user.last_message : "wait..."}
+              {/* {typeof lastMsg == "string"
                 ? lastMsg.length > 30
                   ? `${lastMsg.slice(0, 30)}...`
                   : lastMsg
-                : "Empty Message"}
+                : "Empty Message"} */}
             </span>
           </div>
         </div>

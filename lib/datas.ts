@@ -1,4 +1,5 @@
 import { findMessages, UserProfile, VerifyCurrent } from "./definitions";
+import { getLastMsg } from "./utils";
 
 export const fetchUsers = async (user: UserProfile, currentUser: VerifyCurrent) => {
     try {
@@ -14,8 +15,12 @@ export const fetchUsers = async (user: UserProfile, currentUser: VerifyCurrent) 
             // Else You get all users
             return users[1][0];
         } else {
-            console.log(users[0]);
-            return users[0];
+            const all_users = users[0];
+            for (let i = 0; i < all_users.length; i++) {
+                all_users[i].last_message = getLastMsg(all_users[i].last_message);
+                // console.log(all_users);
+            }
+            return all_users;
         }
     } catch (error) {
         console.log(error);

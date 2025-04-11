@@ -4,7 +4,7 @@ export type UserForm = UserImported
 
 export interface UserFieldsAdded {
     status?: string | null | undefined,
-    last_message?: string | string[] | null | undefined,
+    last_message?: string | string[] | null | undefined | unknown,
     _id?: string | null | undefined;
     createdAt?: string | null | undefined;
     updatedAt?: string | null | undefined;
