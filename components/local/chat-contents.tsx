@@ -43,7 +43,6 @@ const ChatContents = ({ selectedUser }: { selectedUser: UserProfile }) => {
     socket.emit("joinRoom");
     socket.on("recieveMsg", (response) => {
       // Show information
-      console.log(response);
       if (
         (selectedUser._id === response.recieverId &&
           connectedUser._id === response.userId) ||

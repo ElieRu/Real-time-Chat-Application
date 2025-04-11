@@ -27,7 +27,7 @@ export const getCurrentUser = async (
     }
   }
 
-  export const getLastMsg = (msg: string | string[] | null | undefined) => {
+  export const getLastMsg = (msg: string | string[] | null | undefined | unknown) => {
     let TmpMsg = {};
     if (Array.isArray(msg)) {
       let lastElementArray = msg.slice(-1);
@@ -39,7 +39,8 @@ export const getCurrentUser = async (
       
       if ("content" in TmpMsg) {
         return TmpMsg.content;
-      } else {
+      } 
+      else {
         return ''
       }
     }

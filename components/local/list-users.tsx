@@ -16,7 +16,7 @@ import Search from "./search";
 import UserItem from "./user-item";
 import { io } from "socket.io-client";
 import { SubNav } from "./sub-nav";
-import { getCurrentUser } from "@/lib/utils";
+import { getCurrentUser, getLastMsg } from "@/lib/utils";
 
 const ListUsers = ({ onClick }: { onClick: (user: UserForm) => UserForm }) => {
   const [search, setSearch] = useState("");
@@ -60,7 +60,6 @@ const ListUsers = ({ onClick }: { onClick: (user: UserForm) => UserForm }) => {
     socket.on("updateUsersDatas", (response) => {
       // How to uppdate an attribute inside
       // an array with setUser();
-      // console.log(response);
       setUsers((users) =>
         users.map((user) =>
           user._id === response.recieverId ||
