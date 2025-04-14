@@ -16,7 +16,7 @@ import Search from "./search";
 import UserItem from "./user-item";
 import { io } from "socket.io-client";
 import { SubNav } from "./sub-nav";
-import { getCurrentUser, getLastMsg } from "@/lib/utils";
+import { getCurrentUser } from "@/lib/utils";
 
 const ListUsers = ({ onClick }: { onClick: (user: UserForm) => UserForm }) => {
   const [search, setSearch] = useState("");
@@ -58,6 +58,13 @@ const ListUsers = ({ onClick }: { onClick: (user: UserForm) => UserForm }) => {
     const socket = io("http://localhost:3001");
     socket.emit("joinRoom");
     socket.on("updateUsersDatas", (response) => {
+      
+      // Handle actions for the *reciever user
+      if (connectedUser._id === response.recieverId) {
+        // Call Not-Seen Message's number
+        // console.log(());
+      }
+
       // How to uppdate an attribute inside
       // an array with setUser();
       setUsers((users) =>

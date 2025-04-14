@@ -34,6 +34,8 @@ export interface Message {
     userId: string | null | undefined;
     recieverId: string | null | undefined;
     content: string;
+    seen?: string;
+    unreaded_message?: number;
     createdAt: string | null | undefined;
     updatedAt: string | null | undefined;
     __v: number

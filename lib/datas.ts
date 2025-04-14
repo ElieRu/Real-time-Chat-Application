@@ -1,5 +1,5 @@
 import { findMessages, UserProfile, VerifyCurrent } from "./definitions";
-import { getLastMsg } from "./utils";
+import { getUnreadedMsg, getLastMsg } from "./utils";
 
 export const fetchUsers = async (user: UserProfile, currentUser: VerifyCurrent) => {
     try {
@@ -17,8 +17,9 @@ export const fetchUsers = async (user: UserProfile, currentUser: VerifyCurrent) 
         } else {
             const all_users = users[0];
             for (let i = 0; i < all_users.length; i++) {
+                all_users[i].unreaded_message = getUnreadedMsg(all_users[i].last_message);
+                // Get The Last Message
                 all_users[i].last_message = getLastMsg(all_users[i].last_message);
-                // console.log(all_users);
             }
             return all_users;
         }

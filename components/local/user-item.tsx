@@ -14,18 +14,6 @@ const UserItem = ({
     onClick(user);
   };
 
-  const [lastMsg, setLastMsg] = useState<string | null | undefined | unknown>(
-    null
-  );
-
-  useEffect(() => {
-    // setLastMsg(getLastMsg(user.last_message));
-  }, [user.last_message]);
-
-  useEffect(() => {
-    // console.log(user);
-  }, [user]);
-
   return (
     <div
       className="mt-2 flex items-center border rounded-lg p-2 hover:bg-green-500 hover:text-white hover:drop-shadow-md active:bg-green-300"
@@ -46,23 +34,42 @@ const UserItem = ({
           <strong className="capitalize">{user?.name}</strong>
           <div>
             <span className="text-gray-400" style={{ fontSize: "12px" }}>
-              {typeof user.last_message == 'string' ? user.last_message : "wait..."}
-              {/* {typeof lastMsg == "string"
-                ? lastMsg.length > 30
-                  ? `${lastMsg.slice(0, 30)}...`
-                  : lastMsg
-                : "Empty Message"} */}
+              {typeof user.last_message == "string"
+                ? user.last_message.length > 30
+                  ? `${user.last_message.slice(0, 30)}...`
+                  : `${user.last_message}`
+                : "wait..."}
             </span>
           </div>
         </div>
-        <span
-          className={`${
-            user?.status == "online" ? "text-green-500" : "text-gray-400"
-          }`}
-          style={{ fontSize: "12px" }}
-        >
-          {user?.status}
-        </span>
+        <div>
+          <div className="flex justify-end">
+            <span
+              className={`${
+                user?.status == "online" ? "text-green-500" : "text-gray-400"
+              }`}
+              style={{ fontSize: "12px" }}
+            >
+              {user?.status}
+            </span>
+          </div>
+          <div>
+            {typeof user.unreaded_message == "number" &&
+              user.unreaded_message !== 0 && (
+                <span
+                  className="text-gray-100 bg-green-500 py-1 px-2 rounded-lg"
+                  style={{ fontSize: "12px" }}
+                >
+                  {user.unreaded_message > 99
+                    ? `99+`
+                    : user.unreaded_message +
+                      ` Unreaded message${
+                        user.unreaded_message > 1 ? "s" : ""
+                      }`}
+                </span>
+              )}
+          </div>
+        </div>
       </div>
     </div>
   );

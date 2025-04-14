@@ -3,13 +3,13 @@ import Navbar from "@/components/local/navbar";
 import Users from "@/components/local/users";
 import Chat from "@/components/local/chat";
 import Groups from "@/components/local/groups";
-import { Group, UserForm } from "@/lib/definitions";
+import { Group, UserProfile } from "@/lib/definitions";
 import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
 import { useUser } from "@auth0/nextjs-auth0/client";
 
 export default function Home() {
-  const [selectedUser, setSelectedUser] = useState<UserForm>({});
+  const [selectedUser, setSelectedUser] = useState<UserProfile>({});
   const [selectedGroup, setSelectedGroup] = useState<Group>({
     title: "",
     userId: "",
@@ -17,7 +17,7 @@ export default function Home() {
   const [selected, setSelected] = useState(false);
   const { user } = useUser();
 
-  const selectUser = (user: UserForm) => {
+  const selectUser = (user: UserProfile) => {
     setSelected(true);
     setSelectedUser(user);
     setSelectedGroup({

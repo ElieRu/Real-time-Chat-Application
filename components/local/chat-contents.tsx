@@ -14,6 +14,7 @@ const ChatContents = ({ selectedUser }: { selectedUser: UserProfile }) => {
 
   const getUser = async (user: UserProfile | undefined) => {
     setConnectedUser(await getCurrentUser(user, true));
+    // console.log(connectedUser);
   };
 
   const getMesages = async (selectDataMsg: findMessages) => {
@@ -24,8 +25,12 @@ const ChatContents = ({ selectedUser }: { selectedUser: UserProfile }) => {
   useEffect(() => {
     if (user) {
       getUser(user);
-    } 
+    }
   }, [user]);
+
+  useEffect(() => {
+    // console.log({connectedUser, selectedUser});    
+  }, [connectedUser, selectedUser]);
 
   // Select the conversation
   useEffect(() => {
@@ -117,9 +122,21 @@ const ChatContents = ({ selectedUser }: { selectedUser: UserProfile }) => {
                   <div style={{ marginTop: "-5px" }}>
                     <span
                       className="text-gray-200"
-                      style={{ fontSize: "12px" }}
+                      style={{
+                        fontSize: "12px",
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignContent: "center",
+                      }}
                     >
                       {formatTime(message.createdAt)}
+                      <Image
+                        src={message.seen ? "/msg/seen.png" : "/msg/sent.png"}
+                        width={20}
+                        height={1}
+                        style={{height: '15px'}}
+                        alt="Message Status"
+                      />
                     </span>
                   </div>
                 </div>
