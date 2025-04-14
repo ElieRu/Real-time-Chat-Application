@@ -3,7 +3,6 @@ import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
 import { VerifyCurrent } from "./definitions";
 import { fetchUsers } from "./datas";
-import { useEffect } from "react";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -44,6 +43,20 @@ export const getCurrentUser = async (
         return ''
       }
     }
+  }
+
+  export const getUnreadedMsg = (messages: string[]) => {
+    let unreaded_msg = 0;
+    let Tmp = {}
+    for (let i = 0; i < messages.length; i++) {
+      Tmp = messages[i];
+      if ('seen' in Tmp) {
+        if (Tmp.seen === false) {
+          unreaded_msg = unreaded_msg+1;
+        }
+      }
+    }
+    return unreaded_msg;
   }
 
 
