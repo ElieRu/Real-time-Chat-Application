@@ -34,7 +34,7 @@ const ListUsers = ({ onClick }: { onClick: (user: UserForm) => UserForm }) => {
   ) => {
     if (user) {
       setUsers(await fetchUsers(user, current_user));
-    } 
+    }
   };
 
   const getUser = async (user: UserProfile | undefined) => {
@@ -45,7 +45,7 @@ const ListUsers = ({ onClick }: { onClick: (user: UserForm) => UserForm }) => {
   useEffect(() => {
     if (user) {
       getUser(user);
-    } 
+    }
   }, [user]);
 
   // Get all other users
@@ -58,25 +58,25 @@ const ListUsers = ({ onClick }: { onClick: (user: UserForm) => UserForm }) => {
     const socket = io("http://localhost:3001");
     socket.emit("joinRoom");
     socket.on("updateUsersDatas", (response) => {
-      
       // Handle actions for the *reciever user
       if (connectedUser._id === response.recieverId) {
-        // Call Not-Seen Message's number
-        // console.log(());
-      }
-
-      // How to uppdate an attribute inside
-      // an array with setUser();
-      setUsers((users) =>
-        users.map((user) =>
-          user._id === response.recieverId ||
-          user._id === response.userId
-            ? { ...user, last_message: response.content }
-            : user
-        )
-      );
+        console.log(response.seen);
+        setUsers((users) =>
+          users.map((user) =>
+            user._id === response.recieverId || user._id === response.userId
+              ? {
+                  ...user,
+                  last_message: response.content,
+                  unreaded_message:
+                    typeof user.unreaded_message == "number"
+                      && user.unreaded_message++
+                }
+              : user
+          )
+        );
+      }      
     });
-  }, [users]);
+  }, [connectedUser._id]);
 
   return (
     <>

@@ -45,13 +45,16 @@ export const getCurrentUser = async (
     }
   }
 
-  export const getUnreadedMsg = (messages: string[]) => {
+  export const getUnreadedMsg = (user_id: string, messages: string[]) => {
     let unreaded_msg = 0;
     let Tmp = {}
+    
+    console.log(messages);
+    
     for (let i = 0; i < messages.length; i++) {
       Tmp = messages[i];
-      if ('seen' in Tmp) {
-        if (Tmp.seen === false) {
+      if ('seen' in Tmp && 'userId' in Tmp) {
+        if (Tmp.seen === false && Tmp.userId === user_id) {
           unreaded_msg = unreaded_msg+1;
         }
       }

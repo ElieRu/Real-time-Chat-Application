@@ -1,7 +1,6 @@
-import { Message, UserProfile } from "@/lib/definitions";
-import { getLastMsg } from "@/lib/utils";
+import { UserProfile } from "@/lib/definitions";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React from "react";
 
 const UserItem = ({
   user,
@@ -61,11 +60,9 @@ const UserItem = ({
                   style={{ fontSize: "12px" }}
                 >
                   {user.unreaded_message > 99
-                    ? `99+`
+                    ? `99+ message${user.unreaded_message > 1 ? "s" : ""}`
                     : user.unreaded_message +
-                      ` Unreaded message${
-                        user.unreaded_message > 1 ? "s" : ""
-                      }`}
+                      ` message${user.unreaded_message > 1 ? "s" : ""}`}
                 </span>
               )}
           </div>

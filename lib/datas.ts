@@ -10,6 +10,7 @@ export const fetchUsers = async (user: UserProfile, currentUser: VerifyCurrent) 
             }
         })
         const users = await response.json();
+
         if (currentUser) {
             // Return the current user when it's defined
             // Else You get all users
@@ -17,7 +18,7 @@ export const fetchUsers = async (user: UserProfile, currentUser: VerifyCurrent) 
         } else {
             const all_users = users[0];
             for (let i = 0; i < all_users.length; i++) {
-                all_users[i].unreaded_message = getUnreadedMsg(all_users[i].last_message);
+                all_users[i].unreaded_message = getUnreadedMsg(all_users[i]._id, all_users[i].last_message);
                 // Get The Last Message
                 all_users[i].last_message = getLastMsg(all_users[i].last_message);
             }
