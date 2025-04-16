@@ -1,7 +1,7 @@
 "use client";
-import { fetchMessages } from "@/lib/datas";
+import { fetchMessages, fetchUpdatedMsg } from "@/lib/datas";
 import { Messages, findMessages, UserProfile } from "@/lib/definitions";
-import { formatTime, getCurrentUser } from "@/lib/utils";
+import { formatTime, getCurrentUser, getUnreadedMsg } from "@/lib/utils";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
@@ -10,11 +10,11 @@ import { io } from "socket.io-client";
 const ChatContents = ({ selectedUser }: { selectedUser: UserProfile }) => {
   const { user } = useUser();
   const [messages, setMessages] = useState<Messages>([]);
+  const [msg, setMsg] = useState<Messages>([]);
   const [connectedUser, setConnectedUser] = useState<UserProfile>({});
 
   const getUser = async (user: UserProfile | undefined) => {
     setConnectedUser(await getCurrentUser(user, true));
-    // console.log(connectedUser);
   };
 
   const getMesages = async (selectDataMsg: findMessages) => {
@@ -28,10 +28,6 @@ const ChatContents = ({ selectedUser }: { selectedUser: UserProfile }) => {
     }
   }, [user]);
 
-  useEffect(() => {
-    // console.log({connectedUser, selectedUser});    
-  }, [connectedUser, selectedUser]);
-
   // Select the conversation
   useEffect(() => {
     if (connectedUser._id && selectedUser._id) {
@@ -42,12 +38,26 @@ const ChatContents = ({ selectedUser }: { selectedUser: UserProfile }) => {
     }
   }, [connectedUser._id, selectedUser._id]);
 
+  // Call the update fetch
+  const updateMsg = async (messages: Messages) => {
+    let tmp = await fetchUpdatedMsg(messages);
+    // setMessages(tmp);
+  };
+
+  // Update unreaded status message
+  useEffect(() => {
+    // console.log(messages);
+    if (messages && selectedUser._id) {
+      updateMsg(getUnreadedMsg(messages, selectedUser._id));
+    }
+  }, [messages, selectedUser]);
+
   // Real-Time informations with Socket.io
   useEffect(() => {
     const socket = io("http://localhost:3001");
     socket.emit("joinRoom");
     socket.on("recieveMsg", (response) => {
-      // Show information
+      // Show information for two users
       if (
         (selectedUser._id === response.recieverId &&
           connectedUser._id === response.userId) ||
@@ -134,7 +144,7 @@ const ChatContents = ({ selectedUser }: { selectedUser: UserProfile }) => {
                         src={message.seen ? "/msg/seen.png" : "/msg/sent.png"}
                         width={20}
                         height={1}
-                        style={{height: '15px'}}
+                        style={{ height: "15px" }}
                         alt="Message Status"
                       />
                     </span>
