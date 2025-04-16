@@ -60,7 +60,6 @@ const ListUsers = ({ onClick }: { onClick: (user: UserForm) => UserForm }) => {
     socket.on("updateUsersDatas", (response) => {
       // Handle actions for the *reciever user
       if (connectedUser._id === response.recieverId) {
-        console.log(response.seen);
         setUsers((users) =>
           users.map((user) =>
             user._id === response.recieverId || user._id === response.userId

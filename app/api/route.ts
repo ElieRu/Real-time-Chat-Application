@@ -48,7 +48,7 @@ export async function GET(request: NextRequest) {
                     }, 
                     // { $sort: {'createdAt': -1} },
                 ],
-                as: "last_message"
+                as: "messages"
                 }}, {
                     $match: { email: option ? {$eq: email} : {$ne: email}
                 }                

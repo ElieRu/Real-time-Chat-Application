@@ -1,7 +1,7 @@
 import { UserProfile } from "@auth0/nextjs-auth0/client";
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
-import { VerifyCurrent } from "./definitions";
+import { Messages, VerifyCurrent } from "./definitions";
 import { fetchUsers } from "./datas";
 
 export function cn(...inputs: ClassValue[]) {
@@ -45,20 +45,24 @@ export const getCurrentUser = async (
     }
   }
 
-  export const getUnreadedMsg = (user_id: string, messages: string[]) => {
-    let unreaded_msg = 0;
-    let Tmp = {}
-    
-    console.log(messages);
+  const UnreadedMessages = (messages: Messages, receiverId: string) => {
+    let unreaded_msg = [];
+    let Tmp = {};
     
     for (let i = 0; i < messages.length; i++) {
       Tmp = messages[i];
       if ('seen' in Tmp && 'userId' in Tmp) {
-        if (Tmp.seen === false && Tmp.userId === user_id) {
-          unreaded_msg = unreaded_msg+1;
+        if (Tmp.seen === false && Tmp.userId === receiverId) {
+          unreaded_msg.push(messages[i]);
         }
       }
     }
+
+    return unreaded_msg;
+  }
+
+  export const getUnreadedMsg = (messages: Messages, receiverId: string) => {
+    let unreaded_msg = UnreadedMessages(messages, receiverId);    
     return unreaded_msg;
   }
 
