@@ -48,11 +48,11 @@ export const fetchMessages = async (findMessages: findMessages) => {
 export const fetchUpdatedMsg = async (messages: Messages) => {
     try {
         const response = await fetch(`http://localhost:3001/messages`, {
-            method: 'POST',
+            method: 'PUT',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
             },
-            body: JSON.stringify({})
+            body: JSON.stringify({ name: 'John Doe'})
         });
         // const messages = await response.json();
         // console.log(await response.json());        
@@ -80,4 +80,19 @@ export const fetchGroups = async () => {
     }
 }
 
-// 
+export const fetchTest = async () => {
+    try {
+        await fetch(`http://localhost:3001/messages`, {
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                name: 'elie'
+            })
+        })
+        // return [];
+    } catch (error) {
+        // console.log(error);
+    }
+}

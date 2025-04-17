@@ -1,7 +1,6 @@
 import db from "@/lib/db";
 import { UserProfile, UserEmail, Users } from "@/lib/definitions";
 import { User } from "@/lib/models";
-import mongoose, { Types } from "mongoose";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {

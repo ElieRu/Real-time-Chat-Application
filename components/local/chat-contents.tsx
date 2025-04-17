@@ -1,5 +1,5 @@
 "use client";
-import { fetchMessages, fetchUpdatedMsg } from "@/lib/datas";
+import { fetchMessages, fetchTest, fetchUpdatedMsg } from "@/lib/datas";
 import { Messages, findMessages, UserProfile } from "@/lib/definitions";
 import { formatTime, getCurrentUser, getUnreadedMsg } from "@/lib/utils";
 import { useUser } from "@auth0/nextjs-auth0/client";
@@ -46,9 +46,13 @@ const ChatContents = ({ selectedUser }: { selectedUser: UserProfile }) => {
 
   // Update unreaded status message
   useEffect(() => {
-    // console.log(messages);
     if (messages && selectedUser._id) {
-      updateMsg(getUnreadedMsg(messages, selectedUser._id));
+      const socket = io("http://localhost:3001");
+      socket.emit("joinRoom");
+      socket.emit(
+        "updateUnreadedMsg",
+        getUnreadedMsg(messages, selectedUser._id)
+      );
     }
   }, [messages, selectedUser]);
 
