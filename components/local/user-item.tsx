@@ -5,9 +5,11 @@ import React from "react";
 const UserItem = ({
   user,
   onClick,
+  seen
 }: {
   user: UserProfile;
   onClick: (user: UserProfile) => UserProfile;
+  seen: boolean
 }) => {
   const handleClick = (user: UserProfile) => {
     onClick(user);
@@ -52,7 +54,7 @@ const UserItem = ({
               {user?.status}
             </span>
           </div>
-          <div>
+          {!seen && <div>
             {typeof user.unreaded_message == "number" &&
               user.unreaded_message !== 0 && (
                 <span
@@ -65,7 +67,7 @@ const UserItem = ({
                       ` message${user.unreaded_message > 1 ? "s" : ""}`}
                 </span>
               )}
-          </div>
+          </div>}
         </div>
       </div>
     </div>
