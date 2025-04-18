@@ -1,5 +1,5 @@
 "use client";
-import { fetchMessages, fetchTest, fetchUpdatedMsg } from "@/lib/datas";
+import { fetchMessages } from "@/lib/datas";
 import { Messages, findMessages, UserProfile } from "@/lib/definitions";
 import { formatTime, getCurrentUser, getUnreadedMsg } from "@/lib/utils";
 import { useUser } from "@auth0/nextjs-auth0/client";
@@ -7,10 +7,15 @@ import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { io } from "socket.io-client";
 
-const ChatContents = ({ selectedUser }: { selectedUser: UserProfile }) => {
+const ChatContents = ({
+  selectedUser,
+  seenMsg,
+}: {
+  selectedUser: UserProfile;
+  seenMsg: (seen: boolean) => void;
+}) => {
   const { user } = useUser();
   const [messages, setMessages] = useState<Messages>([]);
-  const [msg, setMsg] = useState<Messages>([]);
   const [connectedUser, setConnectedUser] = useState<UserProfile>({});
 
   const getUser = async (user: UserProfile | undefined) => {
@@ -38,12 +43,6 @@ const ChatContents = ({ selectedUser }: { selectedUser: UserProfile }) => {
     }
   }, [connectedUser._id, selectedUser._id]);
 
-  // Call the update fetch
-  const updateMsg = async (messages: Messages) => {
-    let tmp = await fetchUpdatedMsg(messages);
-    // setMessages(tmp);
-  };
-
   // Update unreaded status message
   useEffect(() => {
     if (messages && selectedUser._id) {
@@ -53,6 +52,7 @@ const ChatContents = ({ selectedUser }: { selectedUser: UserProfile }) => {
         "updateUnreadedMsg",
         getUnreadedMsg(messages, selectedUser._id)
       );
+      seenMsg(true);
     }
   }, [messages, selectedUser]);
 

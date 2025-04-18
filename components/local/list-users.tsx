@@ -1,24 +1,28 @@
 "use client";
 import {
-  findMessages,
   OnChange,
   UniqueUser,
   UserForm,
   UserProfile,
-  Users,
   VerifyCurrent,
 } from "@/lib/definitions";
 import React from "react";
 import { useEffect, useState } from "react";
 import { useUser } from "@auth0/nextjs-auth0/client";
-import { fetchMessages, fetchUsers } from "@/lib/datas";
+import { fetchUsers } from "@/lib/datas";
 import Search from "./search";
 import UserItem from "./user-item";
 import { io } from "socket.io-client";
 import { SubNav } from "./sub-nav";
 import { getCurrentUser } from "@/lib/utils";
 
-const ListUsers = ({ onClick }: { onClick: (user: UserForm) => UserForm }) => {
+const ListUsers = ({
+  onClick,
+  seen,
+}: {
+  onClick: (user: UserForm) => UserForm;
+  seen: boolean;
+}) => {
   const [search, setSearch] = useState("");
   const onChange: OnChange = (value) => {
     setSearch(value);
@@ -48,7 +52,7 @@ const ListUsers = ({ onClick }: { onClick: (user: UserForm) => UserForm }) => {
     }
   }, [user]);
 
-  // Get all other users
+  // Get all users
   useEffect(() => {
     getUsers(user, false);
   }, [user]);
@@ -67,14 +71,17 @@ const ListUsers = ({ onClick }: { onClick: (user: UserForm) => UserForm }) => {
                   ...user,
                   last_message: response.content,
                   unreaded_message:
-                    typeof user.unreaded_message == "number"
-                      && user.unreaded_message++
+                    // seen == false ?
+                      typeof user.unreaded_message == "number" &&
+                      user.unreaded_message++
+                      // : 0
                 }
               : user
           )
         );
-      }      
+      }
     });
+    console.log(seen);
   }, [connectedUser._id]);
 
   return (
@@ -101,7 +108,7 @@ const ListUsers = ({ onClick }: { onClick: (user: UserForm) => UserForm }) => {
                 : MyUser?.name && MyUser?.name.includes(search);
             })
             .map((user, index) => (
-              <UserItem key={index} user={user} onClick={onClick} />
+              <UserItem key={index} user={user} onClick={onClick} seen={seen} />
             ))}
         </div>
       </div>

@@ -42,6 +42,13 @@ export default function Home() {
     setSelected(true);
   };
 
+  const [seen, setSeen] = useState(false);
+  const updateStatus = (seen: boolean) => {
+    if (seen) {
+      setSeen(seen);
+    }
+  }
+
   return (
     <div
       className="px-5 py-2"
@@ -50,12 +57,13 @@ export default function Home() {
       <Navbar />
       <div style={{ height: "85%" }}>
         <div className="my-3 grid grid-cols-4 gap-4" style={{ height: "100%" }}>
-          <Users onClick={selectUser} />
+          <Users onClick={selectUser} seen={seen} />
           <Chat
             user={selectedUser && selectedUser}
             group={selectedGroup && selectedGroup}
             selected={selected}
             onClick={selectUser}
+            seenMsg={updateStatus}
           />
           <Groups OnClick={selectGroup} />
         </div>
