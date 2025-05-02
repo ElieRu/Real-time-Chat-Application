@@ -9,10 +9,8 @@ import { io } from "socket.io-client";
 
 const ChatContents = ({
   selectedUser,
-  seenMsg,
 }: {
   selectedUser: UserProfile;
-  seenMsg: (seen: boolean) => void;
 }) => {
   const { user } = useUser();
   const [messages, setMessages] = useState<Messages>([]);
@@ -48,11 +46,8 @@ const ChatContents = ({
     if (messages && selectedUser._id) {
       const socket = io("http://localhost:3001");
       socket.emit("joinRoom");
-      socket.emit(
-        "updateUnreadedMsg",
-        getUnreadedMsg(messages, selectedUser._id)
-      );
-      seenMsg(true);
+      const unreaded_msg = getUnreadedMsg(messages, selectedUser._id);
+      socket.emit("updateUnreadedMsg", unreaded_msg);
     }
   }, [messages, selectedUser]);
 

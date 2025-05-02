@@ -8,10 +8,12 @@ const ChatBar = ({
   user,
   group,
   onClick,
+  select_group
 }: {
   user: UserProfile;
   group: Group;
   onClick: (user: UserProfile) => UserProfile;
+  select_group: (group: Group) => void;
 }) => {
   return (
     <div className="flex items-center justify-between bg-gray-200 rounded-lg pr-2 drop-shadow-md">
@@ -41,8 +43,7 @@ const ChatBar = ({
           <UsersDialog onClick={onClick} />
         </div>
         <div className="lg:hidden">
-          <GroupsDialog />
-          {/* <NewGroup /> */}
+          <GroupsDialog select_group={select_group} />
         </div>
       </div>
     </div>

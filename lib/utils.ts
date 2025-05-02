@@ -29,7 +29,7 @@ export const getCurrentUser = async (
   export const getLastMsg = (msg: string | string[] | null | undefined | unknown) => {
     let TmpMsg = {};
     if (Array.isArray(msg)) {
-      let lastElementArray = msg.slice(-1);
+      const lastElementArray = msg.slice(-1);
       TmpMsg = lastElementArray[0];
 
       if (msg.length == 0) {
@@ -46,7 +46,7 @@ export const getCurrentUser = async (
   }
 
   const UnreadedMessages = (messages: Messages, receiverId: string) => {
-    let unreaded_msg = [];
+    const unreaded_msg = [];
     let Tmp = {};
     
     for (let i = 0; i < messages.length; i++) {
@@ -62,7 +62,7 @@ export const getCurrentUser = async (
   }
 
   export const getUnreadedMsg = (messages: Messages, receiverId: string) => {
-    let unreaded_msg = UnreadedMessages(messages, receiverId);    
+    const unreaded_msg = UnreadedMessages(messages, receiverId);    
     return unreaded_msg;
   }
 

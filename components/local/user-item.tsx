@@ -5,11 +5,9 @@ import React from "react";
 const UserItem = ({
   user,
   onClick,
-  seen
 }: {
   user: UserProfile;
   onClick: (user: UserProfile) => UserProfile;
-  seen: boolean
 }) => {
   const handleClick = (user: UserProfile) => {
     onClick(user);
@@ -39,7 +37,7 @@ const UserItem = ({
                 ? user.last_message.length > 30
                   ? `${user.last_message.slice(0, 30)}...`
                   : `${user.last_message}`
-                : "wait..."}
+                : typeof user.last_message}
             </span>
           </div>
         </div>
@@ -54,7 +52,7 @@ const UserItem = ({
               {user?.status}
             </span>
           </div>
-          {!seen && <div>
+          <div>
             {typeof user.unreaded_message == "number" &&
               user.unreaded_message !== 0 && (
                 <span
@@ -67,7 +65,7 @@ const UserItem = ({
                       ` message${user.unreaded_message > 1 ? "s" : ""}`}
                 </span>
               )}
-          </div>}
+          </div>
         </div>
       </div>
     </div>

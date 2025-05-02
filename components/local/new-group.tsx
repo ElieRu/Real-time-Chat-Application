@@ -1,14 +1,5 @@
 import React, { useEffect, useState } from "react";
 import {
-  Dialog,
-  DialogContent,
-  // DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-
-import {
   Accordion,
   AccordionContent,
   AccordionItem,
@@ -16,9 +7,7 @@ import {
 } from "@/components/ui/accordion";
 
 import { Input } from "../ui/input";
-import { Textarea } from "../ui/textarea";
 import { Button } from "../ui/button";
-import { Plus } from "lucide-react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Group, Groups } from "@/lib/definitions";
 import { createNewGroup } from "@/lib/actions";
@@ -29,7 +18,6 @@ const NewGroup = ({updateGroups}: {updateGroups: (groups: Groups) => void}) => {
     register,
     handleSubmit,
     reset,
-    formState: { errors },
   } = useForm<Group>();
 
   const [valid, setValid] = useState(false);

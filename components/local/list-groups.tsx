@@ -8,9 +8,9 @@ import { Groups as ListOfGroups } from "@/lib/definitions";
 import { fetchGroups } from "@/lib/datas";
 
 const ListGroups = ({
-  OnClick,
+  select_group,
 }: {
-  OnClick: (group: Group) => void;
+  select_group: (group: Group) => void;
 }) => {
   const [search, setSearch] = useState("");
 
@@ -59,7 +59,7 @@ const ListGroups = ({
                 className="mt-2 flex items-center border rounded-lg p-2 hover:bg-green-500 hover:text-white hover:drop-shadow-md active:bg-green-300"
                 style={{ cursor: "pointer" }}
                 key={index}
-                onClick={() => OnClick(group)}
+                onClick={() => select_group(group)}
               >
                 <div className="mr-2 rounded-full border">
                   <Image

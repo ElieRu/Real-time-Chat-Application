@@ -1,4 +1,4 @@
-import { findMessages, Messages, UserProfile, VerifyCurrent } from "./definitions";
+import { findMessages, UserProfile, VerifyCurrent } from "./definitions";
 import { getUnreadedMsg, getLastMsg } from "./utils";
 
 export const fetchUsers = async (user: UserProfile, currentUser: VerifyCurrent) => {
@@ -45,9 +45,9 @@ export const fetchMessages = async (findMessages: findMessages) => {
     }
 }
 
-export const fetchUpdatedMsg = async (messages: Messages) => {
+export const fetchUpdatedMsg = async () => {
     try {
-        const response = await fetch(`http://localhost:3001/messages`, {
+        await fetch(`http://localhost:3001/messages`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -93,6 +93,6 @@ export const fetchTest = async () => {
         })
         // return [];
     } catch (error) {
-        // console.log(error);
+        console.log(error);
     }
 }
