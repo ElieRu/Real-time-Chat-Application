@@ -1,5 +1,6 @@
 "use client";
 import {
+  Message,
   OnChange,
   UniqueUser,
   UserForm,
@@ -18,10 +19,8 @@ import { getCurrentUser } from "@/lib/utils";
 
 const ListUsers = ({
   onClick,
-  seen,
 }: {
   onClick: (user: UserForm) => UserForm;
-  seen: boolean;
 }) => {
   const [search, setSearch] = useState("");
   const onChange: OnChange = (value) => {
@@ -61,27 +60,51 @@ const ListUsers = ({
   useEffect(() => {
     const socket = io("http://localhost:3001");
     socket.emit("joinRoom");
-    socket.on("updateUsersDatas", (response) => {
-      // Handle actions for the *reciever user
+
+    const customized_user = (
+      user: UserProfile,
+      response: Message,
+      seen: boolean
+    ) => {
+      return {
+        ...user,
+        last_message: response.content,
+        unreaded_message:
+          user._id === response.userId
+            ? !seen &&
+              typeof user.unreaded_message == "number" &&
+              user.unreaded_message++
+            : 0,
+      };
+    };
+
+    socket.on("emptyMsgUnreaded", (response) => {
       if (connectedUser._id === response.recieverId) {
         setUsers((users) =>
           users.map((user) =>
             user._id === response.recieverId || user._id === response.userId
-              ? {
-                  ...user,
-                  last_message: response.content,
-                  unreaded_message:
-                    // seen == false ?
-                      typeof user.unreaded_message == "number" &&
-                      user.unreaded_message++
-                      // : 0
-                }
+              ? customized_user(user, response, true)
               : user
           )
         );
       }
     });
-    console.log(seen);
+
+    socket.on("updateUsersDatas", (response) => {
+      // Handle actions for the *reciever user
+      if (
+        connectedUser._id === response.recieverId ||
+        connectedUser._id === response.userId
+      ) {
+        setUsers((users) =>
+          users.map((user) =>
+            user._id === response.recieverId || user._id === response.userId
+              ? customized_user(user, response, false)
+              : user
+          )
+        );
+      }
+    });
   }, [connectedUser._id]);
 
   return (
@@ -108,7 +131,7 @@ const ListUsers = ({
                 : MyUser?.name && MyUser?.name.includes(search);
             })
             .map((user, index) => (
-              <UserItem key={index} user={user} onClick={onClick} seen={seen} />
+              <UserItem key={index} user={user} onClick={onClick} />
             ))}
         </div>
       </div>

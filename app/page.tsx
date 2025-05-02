@@ -40,14 +40,8 @@ export default function Home() {
     setSelectedGroup(group);
     setSelectedUser({});
     setSelected(true);
+    return group;
   };
-
-  const [seen, setSeen] = useState(false);
-  const updateStatus = (seen: boolean) => {
-    if (seen) {
-      setSeen(seen);
-    }
-  }
 
   return (
     <div
@@ -57,15 +51,15 @@ export default function Home() {
       <Navbar />
       <div style={{ height: "85%" }}>
         <div className="my-3 grid grid-cols-4 gap-4" style={{ height: "100%" }}>
-          <Users onClick={selectUser} seen={seen} />
+          <Users onClick={selectUser} />
           <Chat
             user={selectedUser && selectedUser}
             group={selectedGroup && selectedGroup}
             selected={selected}
             onClick={selectUser}
-            seenMsg={updateStatus}
+            select_group={selectGroup}
           />
-          <Groups OnClick={selectGroup} />
+          <Groups select_group={selectGroup} />
         </div>
       </div>
     </div>

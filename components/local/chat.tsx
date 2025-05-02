@@ -8,18 +8,18 @@ export default function Chat({
   group,
   onClick,
   selected,
-  seenMsg,
+  select_group
 }: {
   user: UserProfile;
   group: Group;
   onClick: (user: UserProfile) => UserProfile;
   selected: boolean;
-  seenMsg: (seen: boolean) => void;
+  select_group: (group: Group) => void
 }) {
   return (
     <div className="bg-gray-100 mt-1 col-span-4 md:col-span-2 rounded-lg p-4">
-      {selected && <ChatBar user={user} group={group} onClick={onClick} />}
-      {selected && <ChatContents selectedUser={user} seenMsg={seenMsg} />}
+      {selected && <ChatBar user={user} group={group} onClick={onClick} select_group={select_group} />}
+      {selected && <ChatContents selectedUser={user} />}
       {selected && <ChatInput selectedUser={user} />}
     </div>
   );
